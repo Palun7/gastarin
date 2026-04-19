@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def ingresar_gasto(request):
+    return render(request, 'gastos/ingresar-gastos.html')

@@ -6,11 +6,15 @@
 
 {% block content %}
     <main class="index">
-        <h1>Vamos a controlar gastos</h1>
+        {% if exito %}
+            <p class="exito" id="exito">{{ exito }}</p>
+        {% endif %}
         {% if user.is_authenticated %}
-            <a href="#">Agregar gasto</a>
-            {% else %}
-            <a href="#">Ingresar - Registro</a>
+            <h1>Vamos a controlar gastos</h1>
+            <a href="{% url 'gastos:ingresar-gastos' %}">Agregar gasto</a>
+        {% else %}
+            <h1>Para controlar tus gastos debes iniciar sesión</h1>
+            <a href="{% url 'usuarios:login-registro' %}">Ingresar - Registrarse</a>
         {% endif %}
     </main>
 {% endblock content %}
