@@ -2,11 +2,66 @@
 {% load static %}
 
 {% block title %}
-    Ingresar Gastos
+    Gastarin - Ingresar Gastos
 {% endblock title %}
 
 {% block content %}
     <main class="ingresar-gastos">
-        <h1>Ingresar Gasto</h1>
+        <h1 class="saludo">Ingresar Gasto</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="monto">Monto
+                <input type="number" name="monto" required>
+            </label>
+            <div class="categorias">
+                {% for categoria in categorias %}
+                    <button 
+                    type="button"
+                    class="categoria"
+                    data-id="{{ categoria.id }}"
+                    onclick="seleccionarCategoria(this)"
+                    >
+                    <span class="icono">{{ categoria.icono }}</span>
+                    <span class="texto">{{ categoria.nombre }}</span>
+                    </button>
+                {% endfor %}
+
+                <!-- Botón agregar -->
+                <button class="categoria agregar" onclick="abrirModal()">
+                    <span class="icono">➕</span>
+                    <span class="texto">Nueva</span>
+                </button>
+            </div>
+            <input type="hidden" name="categoria" id="categoria_id">
+
+        </form>
+        <a href="{% url 'gastos:gastos' %}" class="volver">Ir a Gastos</a>
+        <div id="modalCategoria" class="modal">
+            <div class="modal-content">
+                <h3>Nueva categoría</h3>
+
+                <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="nombre" placeholder="Nombre" id="nombre_categoria" required class="input">
+                <input 
+                    type="text" 
+                    name="icono" 
+                    placeholder="Icono (ej: 🍔 🚗 🎮)" 
+                    class="input icono-input"
+                    maxlength="2"
+                    id="icono_categoria"
+                    required
+                >
+
+                <button type="submit" class="btn-primary" id="boton_nueva_categoria">Guardar</button>
+                </form>
+
+                <button class="cerrar" onclick="cerrarModal()">✕</button>
+            </div>
+        </div>
     </main>
 {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/ingresar-gastos.js' %}"></script>
+{% endblock scripts %}

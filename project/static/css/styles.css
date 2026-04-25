@@ -1,23 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: "Lato", sans-serif;
+    font-family: "Nunito", sans-serif;
 }
 
 :root {
-    --body-background: rgb(239, 255, 255);
-    --header-background: rgb(132, 167, 182);
-    --header-background-transparente: rgba(132, 167, 182, 0.548);
-    --footer-background: rgb(73, 124, 140);
+    --body-background: #F5F3FF;
+    --header-background: #F5F3FF;
+    --footer-background: #bab8c4;
     --boton-registro: rgb(157, 137, 255);
-    --boton-login: rgb(142, 237, 249);
+    --boton-login: rgb(0, 209, 236);
+    --Azul-oscuro: rgb(0, 22, 191);
+    --Azul-claro: #5b93fa;
+    --Azul-suave: #5B7CFA;
+    --Azul-violeta: #7A6FF0;
+    --Lavanda: #A78BFA;
+    --Violeta-claro: #C4B5FD;
+    --Gris-claro: #767676;
 }
 
 body {
-    min-height: 100vh;
+    min-height: 105vh;
     display: flex;
     flex-direction: column;
     background-color: var(--body-background);
@@ -42,6 +49,45 @@ body {
     opacity: 0;
 }
 
+.volver {
+    margin-top: 4vh;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(to left, var(--Lavanda), var(--Azul-claro));
+}
+
+.g {
+    color: #5B7CFA;
+}
+
+.a {
+    color: #5b78fa;
+}
+
+.s {
+    color: #5b6efa;
+}
+
+.t {
+    color: #5b63fa;
+}
+
+.r {
+    color: #605bfa;
+}
+
+.i {
+    color: #735bfa;
+}
+
+.n {
+    color: #835bfa;
+}
+
+
 /* Fin Clases Genericas */
 
 /* Base */
@@ -54,17 +100,35 @@ header {
     position: relative;
     display: flex;
     justify-content: end;
+    padding-bottom: .5vh;
+    padding-top: .5vh;
     align-items: center;
-    height: 5vh;
+    height: 6vh;
     background-color: var(--header-background);
+
+    .nombre-app {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        text-decoration: none;
+
+        div {
+            display: flex;
+            flex-direction: row;
+            p {
+                font-size: 1.5em;
+                font-weight: 700;
+            }
+        }
+    }
 
     button {
         cursor: pointer;
         position: absolute;
         margin-right: 2vw;
-        background-color: var(--header-background);
         border: .5px solid black;
-        border-radius: 5px;
+        background-color: var(--body-background);
+        border-radius: 15px;
         padding: 2px 5px;
         transition-duration: .1s;
     }
@@ -73,12 +137,12 @@ header {
         z-index: 1999;
         display: none;
         position: absolute;
-        top: 5vh;
+        top: 6vh;
         right: 0;
         border: .1px solid black;
-        border-radius: 5px;
-        background-color: var(--header-background-transparente);
-        backdrop-filter: blur(4px);
+        border-radius: 15px;
+        background-color: transparent;
+        backdrop-filter: blur(5px);
         padding: 5px;
         margin-right: 2vw;
         transition-duration: .5s;
@@ -104,7 +168,7 @@ header {
                     transition-duration: .5s;
 
                     &:hover {
-                        color: rgb(255, 255, 255);
+                        color: var(--Azul-violeta);
                     }
                 }
 
@@ -113,7 +177,7 @@ header {
                     position: absolute;
                     width: 0;
                     height: .5px;
-                    background: white;
+                    background: var(--Azul-violeta);
                     bottom: 0;
                     left: 0;
                     transition: 0.3s;
@@ -127,7 +191,7 @@ header {
 
         @media (max-width: 600px){
             width: 100vw;
-            height: 90vh;
+            height: 89vh;
             margin-right: 0;
             ul {
                 margin-right: 2vw;
@@ -159,29 +223,117 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 
     h1 {
         margin-top: 10vh;
+        text-align: center;
     }
 
     a {
         margin-top: 10vh;
-        background-color: rgb(163, 183, 191);
         text-decoration: none;
-        color: black;
-        padding: 2px 5px;
-        border: .5px solid black;
-        border-top-left-radius: 3px;
-        border-bottom-right-radius: 3px;
         transition-duration: .5s;
         transform: scale(2);
 
         &:hover {
-            color: white;
-            background-color: rgb(108, 138, 150);
+            background-color: var(--Lavanda) !important;
             transition-duration: .3s;
         }
     }
+}
+
+.saludo {
+    margin-top: 5vh;
+    align-self: flex-start;
+    margin-left: 2.5em;
+    font-size: 1em;
+}
+
+.tarjeta-resumen {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5em;
+    background-color: white;
+    padding: 30px;
+    width: 20vw;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+
+    @media (max-width: 600px) {
+        width: 85vw;
+    }
+}
+
+.resumen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+
+    h4 {
+        position: absolute;
+        right: 0;
+        color: var(--Azul-claro);
+    }
+
+    h5 {
+        color: var(--Gris-claro);
+    }
+
+    p {
+        font-size: 2em;
+        color: var(--Azul-oscuro);
+    }
+}
+
+.ingresos-gastos {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ingresos {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5em;
+
+    h6 {
+        color: var(--Gris-claro);
+    }
+
+    p {
+        font-size: 1.3em;
+        color: var(--Azul-suave);
+    }
+}
+
+.gastos {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5em;
+
+    h6 {
+        color: var(--Gris-claro);
+    }
+
+    p {
+        font-size: 1.3em;
+        color: var(--Lavanda)
+    };
+}
+
+.agregar-gasto {
+    position: absolute;
+    bottom: 2em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(to left, var(--Lavanda), var(--Azul-claro));
 }
 
 .exito {
@@ -198,7 +350,7 @@ footer {
     position: relative;
     display: grid;
     justify-content: center;
-    margin-top: 10vh;
+    margin-top: 5vh;
 
     .login {
         grid-area: 1/1;
@@ -206,10 +358,10 @@ footer {
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 70vh;
+        height: 75vh;
         width: 25vw;
         padding: 2em;
-        border-radius: 5px;
+        border-radius: 15px;
         transition-duration: .5s;
 
         h2 {
@@ -225,31 +377,39 @@ footer {
 
             input {
                 font-size: 1.1em;
-                padding: 2px 5px;
+                padding: 5px 10px;
                 border: .5px solid black;
-                border-radius: 5px;
+                border-radius: 15px;
             }
 
             button {
+                color: white;
+                font-weight: 650;
+                font-size: 1em;
                 margin-top: 1em;
                 transform: scale(1.2);
-                border: .5px solid black;
-                border-radius: 5px;
-                padding: 2px 5px;
-                background: linear-gradient(to right,rgb(82, 152, 243), rgb(178, 242, 253)) ;
+                border: none;
+                letter-spacing: 1.5px;
+                border-radius: 30px;
+                padding: 12px 20px;
+                background: linear-gradient(to right,rgb(96, 161, 246), rgb(4, 151, 255)) ;
                 cursor: pointer;
             }
         }
 
         .boton-registro {
             position: absolute;
+            right: 0;
+            letter-spacing: 1.5px;
+            color: white;
+            font-weight: 600;
             bottom: -40px;
             font-size: 1.3em;
             cursor: pointer;
-            border: .5px solid black;
-            border-radius: 5px;
+            border: none;
+            border-radius: 15px;
             background: linear-gradient(to left, var(--boton-registro), var(--boton-login));
-            padding: 2px 5px;
+            padding: 12px 20px;
         }
     }
 
@@ -259,10 +419,10 @@ footer {
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 70vh;
+        height: 75vh;
         width: 25vw;
         padding: 2em;
-        border-radius: 5px;
+        border-radius: 15px;
         transition-duration: .5s;
 
         h2 {
@@ -280,9 +440,9 @@ footer {
 
             input[type='text'], input[type='password'], input[type='email'], input[type='number'] {
                 font-size: 1.1em;
-                padding: 2px 5px;
+                padding: 5px 10px;
                 border: .5px solid black;
-                border-radius: 5px;
+                border-radius: 15px;
             }
 
             input:required {
@@ -291,18 +451,22 @@ footer {
 
             fieldset {
                 font-size: 1.1em;
-                padding: 2px 5px;
+                padding: 5px 10px;
                 border: .5px solid black;
-                border-radius: 5px;
+                border-radius: 15px;
             }
 
             button {
                 margin-top: 1em;
                 transform: scale(1.2);
-                border: .5px solid black;
-                border-radius: 5px;
-                padding: 2px 5px;
-                background: linear-gradient(to left,var(--boton-registro), rgb(211, 199, 245)) ;
+                border: none;
+                color: white;
+                font-size: 1em;
+                font-weight: 650;
+                letter-spacing: 1.5px;
+                border-radius: 30px;
+                padding: 12px 20px;
+                background: linear-gradient(to left,var(--boton-registro), rgb(154, 122, 241)) ;
                 cursor: pointer;
             }
 
@@ -314,13 +478,16 @@ footer {
 
         .boton-login {
             position: absolute;
+            right: 0;
             bottom: -40px;
             font-size: 1.3em;
             cursor: pointer;
-            border: .5px solid black;
-            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
             background: linear-gradient(to right, var(--boton-registro), var(--boton-login));
-            padding: 2px 5px;
+            padding: 12px 20px;
         }
     }
 
@@ -343,3 +510,131 @@ footer {
 
 
 /* Fin Login-Registro */
+
+/* Gastos */
+
+.ingresar-gastos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        margin-top: 10vh;
+    }
+
+    form {
+        width: 85vw;
+        overflow-x: hidden;
+
+        .monto {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1em;
+            font-weight: 500;
+            color: var(--Lavanda);
+
+            input {
+                border: none;
+                font-size: 1.5em;
+            }
+        }
+    }
+}
+
+.main-gastos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        margin-top: 10vh;
+    }
+}
+
+.categorias {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.categoria {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+  min-width: 72px;
+  padding: 12px 8px;
+
+  border: none;
+  background: #F3F0FF;
+  border-radius: 16px;
+  cursor: pointer;
+
+  transition: all .2s ease;
+}
+
+.categoria .icono {
+  font-size: 20px;
+  color: #6B6CA5;
+}
+
+.categoria .texto {
+  font-size: 12px;
+  color: #6B6CA5;
+  white-space: nowrap;
+}
+
+.categoria.active {
+  background: linear-gradient(135deg, #7A6FF0, #5B7CFA);
+}
+
+.categoria.active .icono,
+.categoria.active .texto {
+  color: #fff;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.icono-input {
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 5px;
+}
+
+.cerrar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Fin Gastos  */

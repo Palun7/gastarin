@@ -7,13 +7,13 @@ boton_regsitrar.addEventListener('click',()=>{
     login.classList.toggle('z-index-1000');
     login.classList.toggle('opacity-0');
     registro.classList.toggle('z-index-1000');
-    setTimeout(() => {
-        registro.classList.toggle('display-none');
-        login.classList.toggle('display-none');
-    }, 500);
+    registro.classList.toggle('display-none');
     setTimeout(() => {
         registro.classList.toggle('opacity-0');
-    }, 600)
+    }, 250)
+    setTimeout(() => {
+        login.classList.toggle('display-none');
+    }, 500);
 });
 
 boton_login.addEventListener('click',()=>{
@@ -22,13 +22,13 @@ boton_login.addEventListener('click',()=>{
     login.classList.toggle('z-index-1000');
     registro.classList.toggle('z-index-1000');
     registro.classList.toggle('opacity-0');
-    setTimeout(() => {
-        login.classList.toggle('display-none');
-        registro.classList.toggle('display-none');
-    }, 500);
+    login.classList.toggle('display-none');
     setTimeout(() => {
         login.classList.toggle('opacity-0');
-    }, 600);
+    }, 250);
+    setTimeout(() => {
+        registro.classList.toggle('display-none');
+    }, 500);
 });
 
 const pass = document.getElementById('password');

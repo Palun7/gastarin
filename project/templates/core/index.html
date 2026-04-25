@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Gastarin - Control de gastos
@@ -10,11 +11,28 @@
             <p class="exito" id="exito">{{ exito }}</p>
         {% endif %}
         {% if user.is_authenticated %}
-            <h1>Vamos a controlar gastos</h1>
-            <a href="{% url 'gastos:ingresar-gastos' %}">Agregar gasto</a>
+            <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
+            <div class="tarjeta-resumen">
+                <div class="resumen">
+                    <h4>Abril</h4>
+                    <h5>Saldo actual</h5>
+                    <p class="saldo">$150000</p>
+                </div>
+                <div class="ingresos-gastos">
+                    <div class="ingresos">
+                        <h6>Ingresos</h6>
+                        <p>$1100000</p>
+                    </div>
+                    <div class="gastos">
+                        <h6>Gastos</h6>
+                        <p>$950000</p>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'gastos:ingresar-gastos' %}" class="agregar-gasto">+</a>
         {% else %}
             <h1>Para controlar tus gastos debes iniciar sesión</h1>
-            <a href="{% url 'usuarios:login-registro' %}">Ingresar - Registrarse</a>
+            <a href="{% url 'usuarios:login-registro' %}" class="volver">Ingresar - Registrarse</a>
         {% endif %}
     </main>
 {% endblock content %}
