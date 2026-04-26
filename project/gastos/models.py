@@ -10,7 +10,7 @@ def validar_tamano(archivo):
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=30, unique=True)
-    icono = models.ImageField(upload_to='categorias/', validators=[validar_tamano])
+    icono = models.CharField(max_length=10, validators=[validar_tamano])
 
     class Meta:
         verbose_name = 'Categoría'
@@ -21,7 +21,7 @@ class Categoria(models.Model):
 
 class Categoria_ingreso(models.Model):
     nombre = models.CharField(max_length=30, unique=True)
-    icono = models.ImageField(upload_to='categorias_ingreso/', validators=[validar_tamano])
+    icono = models.CharField(max_length=10, validators=[validar_tamano])
 
     class Meta:
         verbose_name = 'Categoría ingreso'
