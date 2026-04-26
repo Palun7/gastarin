@@ -14,18 +14,18 @@
             <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
             <div class="tarjeta-resumen">
                 <div class="resumen">
-                    <h4>Abril</h4>
+                    <h4>{{ mes }}</h4>
                     <h5>Saldo actual</h5>
-                    <p class="saldo">$150000</p>
+                    <p class="saldo">{{ saldo }}</p>
                 </div>
                 <div class="ingresos-gastos">
-                    <div class="ingresos">
+                    <div class="ingresos-index">
                         <h6>Ingresos</h6>
-                        <p>$1100000</p>
+                        <p>${{ ingreso }}</p>
                     </div>
                     <div class="gastos">
                         <h6>Gastos</h6>
-                        <p>$950000</p>
+                        <p>${{ gasto_total }}</p>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Categoria, Gasto, ingreso
+from .models import Categoria, Gasto, Gasto_fijo, Ingreso, Categoria_ingreso
 
 @login_required
 def ingresar_gasto(request):
-    if request.method == 'POST' and 'nombre' in request.POST:
-        nombre = request.POST.get('nombre').capitalize()
+
+    categorias = Categoria.objects.all()
+    categorias_ingreso = Categoria_ingreso.objects.all()
+
+    if request.method == 'POST' and 'nombre_categoria' in request.POST:
+        nombre = request.POST.get('nombre_categoria').capitalize()
         icono = request.POST.get('icono') or "📁"  # default
 
         Categoria.objects.create(
@@ -13,11 +17,81 @@ def ingresar_gasto(request):
             icono=icono
         )
         return redirect('gastos:ingresar-gastos')
+    elif request.method == 'POST' and 'nombre_categoria_ingreso' in request.POST:
+        nombre = request.POST.get('nombre_categoria_ingreso').capitalize()
+        icono = request.POST.get('icono') or "📁"  # default
+
+        Categoria_ingreso.objects.create(
+            nombre=nombre,
+            icono=icono
+        )
+        return redirect('gastos:ingresar-gastos')
+
+    if 'gasto_diario' in request.POST:
+        usuario = request.user
+        monto = request.POST.get('monto')
+        categoria_id = request.POST.get('categoria')
+        fecha = request.POST.get('fecha')
+        nota = request.POST.get('nota')
+        foto = request.FILES.get('foto')
 
 
-    categorias = Categoria.objects.all()
+        categoria = Categoria.objects.get(id=categoria_id)
 
-    return render(request, 'gastos/ingresar-gastos.html', {'categorias': categorias})
+        Gasto.objects.create(
+            usuario=usuario,
+            monto=monto,
+            categoria=categoria,
+            fecha=fecha,
+            nota=nota,
+            foto=foto,
+        )
+        return redirect('core:index')
+    elif 'gasto_fijo' in request.POST:
+        usuario = request.user
+        monto = request.POST.get('monto')
+        cuotas = request.POST.get('cuotas') or False
+        categoria_id = request.POST.get('categoria')
+        fecha = request.POST.get('fecha')
+        nota = request.POST.get('nota')
+        foto = request.FILES.get('foto')
+
+
+        categoria = Categoria.objects.get(id=categoria_id)
+
+        Gasto_fijo.objects.create(
+            usuario=usuario,
+            monto=monto,
+            cuotas=cuotas,
+            categoria=categoria,
+            fecha=fecha,
+            nota=nota,
+            foto=foto,
+        )
+        return redirect('core:index')
+    elif 'ingreso' in request.POST:
+        usuario = request.user
+        monto = request.POST.get('monto')
+        categoria_id = request.POST.get('categoria')
+        fecha = request.POST.get('fecha')
+        nota = request.POST.get('nota')
+        foto = request.FILES.get('foto')
+
+
+        categoria = Categoria_ingreso.objects.get(id=categoria_id)
+
+        Ingreso.objects.create(
+            usuario=usuario,
+            monto=monto,
+            categoria=categoria,
+            fecha=fecha,
+            nota=nota,
+            foto=foto,
+        )
+        return redirect('core:index')
+
+
+    return render(request, 'gastos/ingresar-gastos.html', {'categorias': categorias, 'categorias_ingreso': categorias_ingreso})
 
 @login_required
 def gastos(request):

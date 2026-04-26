@@ -2,63 +2,178 @@
 {% load static %}
 
 {% block title %}
-    Gastarin - Ingresar Gastos
+    Gastarin - Ingresar Gastos/Ingresos
 {% endblock title %}
 
 {% block content %}
     <main class="ingresar-gastos">
-        <h1 class="saludo">Ingresar Gasto</h1>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label class="monto">Monto
-                <input type="number" name="monto" required>
-            </label>
-            <div class="categorias">
-                {% for categoria in categorias %}
-                    <button 
-                    type="button"
-                    class="categoria"
-                    data-id="{{ categoria.id }}"
-                    onclick="seleccionarCategoria(this)"
-                    >
-                    <span class="icono">{{ categoria.icono }}</span>
-                    <span class="texto">{{ categoria.nombre }}</span>
-                    </button>
-                {% endfor %}
-
-                <!-- Botón agregar -->
-                <button class="categoria agregar" onclick="abrirModal()">
-                    <span class="icono">➕</span>
-                    <span class="texto">Nueva</span>
-                </button>
-            </div>
-            <input type="hidden" name="categoria" id="categoria_id">
-
-        </form>
-        <a href="{% url 'gastos:gastos' %}" class="volver">Ir a Gastos</a>
-        <div id="modalCategoria" class="modal">
-            <div class="modal-content">
-                <h3>Nueva categoría</h3>
-
-                <form method="POST" enctype="multipart/form-data">
+        <div class="seleccion">
+            <div class="selector selector_izquierda"></div>
+            <button class="btn_diario btn_activo">Gasto Diario</button>
+            <button class="btn_fijo">Gasto Fijo</button>
+            <button class="btn_ingreso">Ingreso</button>
+        </div>
+        <div class="gastos-diarios">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="text" name="nombre" placeholder="Nombre" id="nombre_categoria" required class="input">
-                <input 
-                    type="text" 
-                    name="icono" 
-                    placeholder="Icono (ej: 🍔 🚗 🎮)" 
-                    class="input icono-input"
-                    maxlength="2"
-                    id="icono_categoria"
-                    required
-                >
+                <label class="monto">Monto
+                    <div><p>$</p><input type="number" name="monto" required></div>
+                </label>
+                <label class="label-categoria">Categoría
+                    <div class="categorias">
+                        {% for categoria in categorias %}
+                            <button 
+                            type="button"
+                            class="categoria "
+                            data-id="{{ categoria.id }}"
+                            >
+                            <span class="icono">{{ categoria.icono }}</span>
+                            <span class="texto">{{ categoria.nombre }}</span>
+                            </button>
+                        {% endfor %}
 
-                <button type="submit" class="btn-primary" id="boton_nueva_categoria">Guardar</button>
-                </form>
+                        <!-- Botón agregar -->
+                        <button class="categoria agregar" onclick="abrirModal()">
+                            <span class="icono">➕</span>
+                            <span class="texto">Nueva</span>
+                        </button>
+                    </div>
+                </label>
+                <input type="hidden" name="categoria" id="categoria_id">
 
-                <button class="cerrar" onclick="cerrarModal()">✕</button>
+                <input type="date" name="fecha" value="{% now 'DATE_FORMAT' %}" class="fecha-gasto">
+                <textarea name="nota" placeholder="Nota (opcional)" class="nota-gasto"></textarea>
+                <label class="imagen-gasto">Imagen de referencia (opcional)
+                    <input type="file" name="foto">
+                </label>
+
+                <button type="submit" name="gasto_diario" class="volver">Cargar Gasto</button>
+            </form>
+            <div id="modalCategoria" class="modal">
+                <div class="modal-content">
+                    <h3>Nueva categoría de gastos</h3>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="nombre_categoria" placeholder="Nombre" id="nombre_categoria" required class="input">
+                        <input 
+                            type="text" 
+                            name="icono" 
+                            placeholder="Emoji (ej: 🍔 🚗 🎮)" 
+                            class="input icono-input"
+                            maxlength="2"
+                            id="icono_categoria"
+                            required
+                        >
+
+                        <button type="submit" class="volver" id="boton_nueva_categoria">Guardar</button>
+                    </form>
+
+                    <button class="cerrar" onclick="cerrarModal()">✕</button>
+                </div>
             </div>
         </div>
+        <div class="gastos-fijos display-none">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="monto">Monto
+                    <div><p>$</p><input type="number" name="monto" required></div>
+                </label>
+                <label class="monto">Cuotas
+                    <input type="number" name="cuotas" placeholder="ej: Tarjeta/Prestamo (opcional)">
+                </label>
+                <label class="label-categoria">Categoría
+                    <div class="categorias">
+                        {% for categoria in categorias %}
+                            <button 
+                            type="button"
+                            class="categoria_fijo"
+                            data-id="{{ categoria.id }}"
+                            >
+                            <span class="icono">{{ categoria.icono }}</span>
+                            <span class="texto">{{ categoria.nombre }}</span>
+                            </button>
+                        {% endfor %}
+
+                        <!-- Botón agregar -->
+                        <button class="categoria agregar" onclick="abrirModal()">
+                            <span class="icono">➕</span>
+                            <span class="texto">Nueva</span>
+                        </button>
+                    </div>
+                </label>
+                <input type="hidden" name="categoria" id="categoria_fijo_id">
+
+                <input type="date" name="fecha" value="{% now 'DATE_FORMAT' %}" class="fecha-gasto">
+                <textarea name="nota" placeholder="Nota (opcional)" class="nota-gasto"></textarea>
+                <label class="imagen-gasto">Imagen de referencia (opcional)
+                    <input type="file" name="foto">
+                </label>
+
+                <button type="submit" name="gasto_fijo" class="volver">Cargar Gasto Fijo</button>
+            </form>
+        </div>
+        <div class="ingresos display-none">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="monto">Monto
+                    <div><p>$</p><input type="number" name="monto" required></div>
+                </label>
+                <label class="label-categoria">Categoría
+                    <div class="categorias">
+                        {% for categoria in categorias_ingreso %}
+                            <button 
+                            type="button"
+                            class="categoria_ingreso"
+                            data-id="{{ categoria.id }}"
+                            >
+                            <span class="icono">{{ categoria.icono }}</span>
+                            <span class="texto">{{ categoria.nombre }}</span>
+                            </button>
+                        {% endfor %}
+
+                        <!-- Botón agregar -->
+                        <button class="categoria agregar" onclick="abrirModalIngreso()">
+                            <span class="icono">➕</span>
+                            <span class="texto">Nueva</span>
+                        </button>
+                    </div>
+                </label>
+                <input type="hidden" name="categoria" id="categoria_ingreso_id">
+
+                <input type="date" name="fecha" value="{% now 'DATE_FORMAT' %}" class="fecha-gasto">
+                <textarea name="nota" placeholder="Nota (opcional)" class="nota-gasto"></textarea>
+                <label class="imagen-gasto">Imagen de referencia (opcional)
+                    <input type="file" name="foto">
+                </label>
+
+                <button type="submit" name="ingreso" class="volver">Cargar Ingreso</button>
+            </form>
+            <div id="modalCategoria_ingreso" class="modal">
+                <div class="modal-content">
+                    <h3>Nueva categoría de ingresos</h3>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="nombre_categoria_ingreso" placeholder="Nombre" id="nombre_categoria" required class="input">
+                        <input 
+                            type="text" 
+                            name="icono" 
+                            placeholder="Emoji (ej: 🍔 🚗 🎮)" 
+                            class="input icono-input"
+                            maxlength="2"
+                            id="icono_categoria"
+                            required
+                        >
+
+                        <button type="submit" class="volver" id="boton_nueva_categoria">Guardar</button>
+                    </form>
+
+                    <button class="cerrar" onclick="cerrarModal()">✕</button>
+                </div>
+            </div>
+        </div>
+        <a href="{% url 'gastos:gastos' %}" class="volver btn_atras">Ir a Gastos</a>
     </main>
 {% endblock content %}
 

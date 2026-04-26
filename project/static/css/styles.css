@@ -14,6 +14,7 @@
     --footer-background: #bab8c4;
     --boton-registro: rgb(157, 137, 255);
     --boton-login: rgb(0, 209, 236);
+    --Lavanda-claro: #e9d7ff;
     --Azul-oscuro: rgb(0, 22, 191);
     --Azul-claro: #5b93fa;
     --Azul-suave: #5B7CFA;
@@ -53,10 +54,23 @@ body {
     margin-top: 4vh;
     font-weight: 700;
     padding: 12px 20px;
+    border: none;
     border-radius: 15px;
     text-decoration: none;
     color: white;
     background: linear-gradient(to left, var(--Lavanda), var(--Azul-claro));
+}
+
+.margin-top-2 {
+    margin-top: 2em;
+}
+
+.width-10 {
+    width: 10em;
+}
+
+.sombra {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .g {
@@ -123,6 +137,9 @@ header {
     }
 
     button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
         position: absolute;
         margin-right: 2vw;
@@ -293,7 +310,7 @@ footer {
     justify-content: space-between;
 }
 
-.ingresos {
+.ingresos-index {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -514,21 +531,34 @@ footer {
 /* Gastos */
 
 .ingresar-gastos {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    justify-content: center;
     align-items: center;
 
     h1 {
         margin-top: 10vh;
     }
 
+    .btn_atras {
+        position: absolute;
+        top: -2em;
+        left: 1em;
+    }
+
     form {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
         width: 85vw;
         overflow-x: hidden;
 
-        .monto {
+        .monto{
             display: flex;
             flex-direction: column;
+            gap: 10px;
+            letter-spacing: 1.1px;
             background-color: white;
             padding: 20px;
             border-radius: 15px;
@@ -536,10 +566,58 @@ footer {
             font-weight: 500;
             color: var(--Lavanda);
 
+            div {
+                display: flex;
+                gap: 5px;
+
+                p {
+                    font-size: 1.5em;
+                }
+
+            }
+
             input {
+                color: var(--Lavanda);
                 border: none;
                 font-size: 1.5em;
             }
+        }
+
+        .label-categoria {
+            display: flex;
+            flex-direction: column;
+            letter-spacing: 1.1px;
+            gap: 15px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1em;
+            font-weight: 500;
+            color: var(--Lavanda);
+        }
+
+        .fecha-gasto {
+            width: 100%;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: white;
+            color: var(--Lavanda);
+            border: none;
+        }
+
+        .nota-gasto {
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            color: var(--Lavanda);
+        }
+
+        .imagen-gasto {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: .8em;
+            color: var(--Gris-claro);
         }
     }
 }
@@ -555,86 +633,163 @@ footer {
 }
 
 .categorias {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding: 4px 0;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 0;
 }
 
-.categoria {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.categoria, .categoria_fijo, .categoria_ingreso {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-  gap: 6px;
-  min-width: 72px;
-  padding: 12px 8px;
+    gap: 6px;
+    min-width: 72px;
+    padding: 12px 8px;
 
-  border: none;
-  background: #F3F0FF;
-  border-radius: 16px;
-  cursor: pointer;
+    border: none;
+    background: var(--Lavanda-claro);
+    border-radius: 16px;
+    cursor: pointer;
 
-  transition: all .2s ease;
+    transition: all .2s ease;
 }
 
-.categoria .icono {
-  font-size: 20px;
-  color: #6B6CA5;
+.categoria .icono, .categoria_fijo .icono, .categoria_ingreso .icono {
+    font-size: 20px;
+    color: #6B6CA5;
 }
 
-.categoria .texto {
-  font-size: 12px;
-  color: #6B6CA5;
-  white-space: nowrap;
+.categoria .texto, .categoria_fijo .texto, .categoria_ingreso .texto {
+    font-size: 12px;
+    color: #6B6CA5;
+    white-space: nowrap;
 }
 
-.categoria.active {
-  background: linear-gradient(135deg, #7A6FF0, #5B7CFA);
+.categoria.active, .categoria_fijo.active, .categoria_ingreso.active {
+    background: linear-gradient(135deg, #7A6FF0, #5B7CFA);
 }
 
 .categoria.active .icono,
-.categoria.active .texto {
-  color: #fff;
+.categoria.active .texto, .categoria_fijo.active .icono,
+.categoria_fijo.active .texto, .categoria_ingreso.active .icono,
+.categoria_ingreso.active .texto {
+    color: #fff;
 }
 
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
 
-  display: none;
-  align-items: center;
-  justify-content: center;
+    display: none;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 400px;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 18px;
+    width: 90%;
+    position: relative;
+    background-color: var(--body-background);
+
+    form {
+        margin-top: 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        input {
+            width: 95%;
+            font-size: 1.3em;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+        }
+
+        button {
+            margin-top: 1em !important;
+            width: 70%;
+        }
+    }
 }
 
 .icono-input {
-  text-align: center;
-  font-size: 20px;
-  letter-spacing: 5px;
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 5px;
 }
 
 .cerrar {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: none;
-  background: none;
-  font-size: 18px;
-  cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
 }
 
+.seleccion {
+    position: relative;
+    display: flex;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    border-radius: 15px;
+    background-color: white;
+
+    .selector {
+        position: absolute;
+        width: 8em;
+        height: 2.5em;
+        border-radius: 15px;
+        background: linear-gradient(to left, var(--Lavanda), var(--Azul-claro));
+        transition-duration: .5s;
+    }
+
+    button {
+        letter-spacing: 1.2px;
+        width: 9em;
+        height: 2.5;
+        padding: 10px 15px;
+        background-color: transparent;
+        border: none;
+        border-radius: 15px;
+        z-index: 99;
+    }
+}
+
+.ingresos, .gastos-fijos, .gastos-diarios {
+    height: 75vh;
+    overflow-y: auto;
+    transition-duration: .2s;
+    grid-area: 2/1;
+}
+
+.btn_activo {
+    color: white !important;
+}
+
+.selector_izquierda {
+    left: 0;
+    transform: translate(0);
+}
+
+.selector_centro {
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.selector_derecha {
+    left: 100%;
+    transform: translate(-100%);
+}
 /* Fin Gastos  */
