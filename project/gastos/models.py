@@ -17,7 +17,7 @@ class Categoria(models.Model):
         verbose_name_plural = 'Categorías'
 
     def __str__(self):
-        return self.nombre
+        return f'{self.nombre} {self.icono}'
 
 class Categoria_ingreso(models.Model):
     nombre = models.CharField(max_length=30, unique=True)
@@ -28,7 +28,7 @@ class Categoria_ingreso(models.Model):
         verbose_name_plural = 'Categorías ingreso'
 
     def __str__(self):
-        return self.nombre
+        return f'{self.nombre} {self.icono}'
 
 class Gasto(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -44,9 +44,9 @@ class Gasto(models.Model):
 
     def __str__(self):
         if self.nota:
-            return f'{self.usuario.username}: ${self.monto} - {self.nota}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.nota}'
         else:
-            return f'{self.usuario.username}: ${self.monto} - {self.categoria.nombre}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.categoria.nombre}'
 
 class Ingreso(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -62,9 +62,9 @@ class Ingreso(models.Model):
 
     def __str__(self):
         if self.nota:
-            return f'{self.usuario.username}: ${self.monto} - {self.nota}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.nota}'
         else:
-            return f'{self.usuario.username}: ${self.monto}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono}'
 
 class Gasto_fijo(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -81,10 +81,10 @@ class Gasto_fijo(models.Model):
 
     def __str__(self):
         if self.nota and not self.cuotas:
-            return f'{self.usuario.username}: ${self.monto} - {self.nota}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.nota}'
         elif self.cuotas and not self.nota:
-            return f'{self.usuario.username}: ${self.monto} - {self.cuotas}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.cuotas}'
         elif self.cuotas and self.nota:
-            return f'{self.usuario.username}: ${self.monto} - {self.cuotas} - {self.nota}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.cuotas} - {self.nota}'
         else:
-            return f'{self.usuario.username}: ${self.monto} - {self.categoria.nombre}'
+            return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.categoria.nombre}'
