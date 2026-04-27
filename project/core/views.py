@@ -70,9 +70,13 @@ def index(request):
 
     gasto_total = gasto_diario + gasto_fijo
 
+    if saldo < 0:
+        saldo_rojo = saldo
+
     return render(request, 'core/index.html', {
         'ingreso': ingreso_total,
         'gasto_total': gasto_total,
         'saldo': saldo,
+        'saldo_rojo':saldo_rojo,
         'mes': mes,
     })

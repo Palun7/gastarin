@@ -16,7 +16,11 @@
                 <div class="resumen">
                     <h4>{{ mes }}</h4>
                     <h5>Saldo actual</h5>
-                    <p class="saldo">{{ saldo }}</p>
+                    {% if saldo_rojo %}
+                        <p class="saldo_rojo">${{ saldo_rojo }}</p>
+                    {% else %}
+                        <p class="saldo">${{ saldo }}</p>
+                    {% endif %}
                 </div>
                 <div class="ingresos-gastos">
                     <div class="ingresos-index">

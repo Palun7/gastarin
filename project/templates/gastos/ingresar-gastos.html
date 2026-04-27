@@ -49,29 +49,6 @@
 
                 <button type="submit" name="gasto_diario" class="volver">Cargar Gasto</button>
             </form>
-            <div id="modalCategoria" class="modal">
-                <div class="modal-content">
-                    <h3>Nueva categoría de gastos</h3>
-
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="text" name="nombre_categoria" placeholder="Nombre" id="nombre_categoria" required class="input">
-                        <input 
-                            type="text" 
-                            name="icono" 
-                            placeholder="Emoji (ej: 🍔 🚗 🎮)" 
-                            class="input icono-input"
-                            maxlength="2"
-                            id="icono_categoria"
-                            required
-                        >
-
-                        <button type="submit" class="volver" id="boton_nueva_categoria">Guardar</button>
-                    </form>
-
-                    <button class="cerrar" onclick="cerrarModal()">✕</button>
-                </div>
-            </div>
         </div>
         <div class="gastos-fijos display-none">
             <form method="post" enctype="multipart/form-data">
@@ -173,6 +150,29 @@
                 </div>
             </div>
         </div>
+        <div id="modalCategoria" class="modal">
+                <div class="modal-content">
+                    <h3>Nueva categoría de gastos</h3>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="nombre_categoria" placeholder="Nombre" id="nombre_categoria" required class="input">
+                        <input 
+                            type="text" 
+                            name="icono" 
+                            placeholder="Emoji (ej: 🍔 🚗 🎮)" 
+                            class="input icono-input"
+                            maxlength="2"
+                            id="icono_categoria"
+                            required
+                        >
+
+                        <button type="submit" class="volver" id="boton_nueva_categoria">Guardar</button>
+                    </form>
+
+                    <button class="cerrar" onclick="cerrarModal()">✕</button>
+                </div>
+            </div>
         <a href="{% url 'gastos:gastos' %}" class="volver btn_atras">Ir a Gastos</a>
     </main>
 {% endblock content %}
