@@ -1,34 +1,30 @@
 from django.db import models
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 from usuarios.models import Usuario
 
-def validar_tamano(archivo):
-    limite = 5 * 1024 * 1024  # 5 MB
-    if archivo.size > limite:
-        raise ValidationError("El archivo es muy grande")
-
 class Categoria(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=30, unique=True)
-    icono = models.CharField(max_length=10, validators=[validar_tamano])
+    icono = models.CharField(max_length=10)
 
     class Meta:
         verbose_name = 'Categoría'
         verbose_name_plural = 'Categorías'
 
     def __str__(self):
-        return f'{self.nombre} {self.icono}'
+        return f'{self.nombre} {self.icono} ({self.usuario})'
 
 class Categoria_ingreso(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=30, unique=True)
-    icono = models.CharField(max_length=10, validators=[validar_tamano])
+    icono = models.CharField(max_length=10)
 
     class Meta:
         verbose_name = 'Categoría ingreso'
         verbose_name_plural = 'Categorías ingreso'
 
     def __str__(self):
-        return f'{self.nombre} {self.icono}'
+        return f'{self.nombre} {self.icono} ({self.usuario})'
 
 class Gasto(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)

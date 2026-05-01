@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='categoria',
             name='icono',
-            field=models.CharField(max_length=10, validators=[gastos.models.validar_tamano]),
+            field=models.CharField(max_length=10),
         ),
         migrations.AlterField(
             model_name='categoria_ingreso',
             name='icono',
-            field=models.CharField(max_length=10, validators=[gastos.models.validar_tamano]),
+            field=models.CharField(max_length=10),
         ),
     ]

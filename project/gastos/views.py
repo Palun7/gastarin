@@ -5,23 +5,27 @@ from .models import Categoria, Gasto, Gasto_fijo, Ingreso, Categoria_ingreso
 @login_required
 def ingresar_gasto(request):
 
-    categorias = Categoria.objects.all()
-    categorias_ingreso = Categoria_ingreso.objects.all()
+    categorias = Categoria.objects.filter(usuario=request.user)
+    categorias_ingreso = Categoria_ingreso.objects.filter(usuario=request.user)
 
     if request.method == 'POST' and 'nombre_categoria' in request.POST:
+        usuario = request.user
         nombre = request.POST.get('nombre_categoria').capitalize()
         icono = request.POST.get('icono') or "📁"  # default
 
         Categoria.objects.create(
+            usuario=usuario,
             nombre=nombre,
             icono=icono
         )
         return redirect('gastos:ingresar-gastos')
     elif request.method == 'POST' and 'nombre_categoria_ingreso' in request.POST:
+        usuario = request.user
         nombre = request.POST.get('nombre_categoria_ingreso').capitalize()
         icono = request.POST.get('icono') or "📁"  # default
 
         Categoria_ingreso.objects.create(
+            usuario=usuario,
             nombre=nombre,
             icono=icono
         )

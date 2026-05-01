@@ -24,7 +24,7 @@
                         {% for categoria in categorias %}
                             <button 
                             type="button"
-                            class="categoria "
+                            class="categoria"
                             data-id="{{ categoria.id }}"
                             >
                             <span class="icono">{{ categoria.icono }}</span>
@@ -41,7 +41,7 @@
                 </label>
                 <input type="hidden" name="categoria" id="categoria_id">
 
-                <input type="date" name="fecha" value="{% now 'DATE_FORMAT' %}" class="fecha-gasto">
+                <input type="date" name="fecha" value="{% now 'Y-m-d' %}" class="fecha-gasto">
                 <textarea name="nota" placeholder="Nota (opcional)" class="nota-gasto"></textarea>
                 <label class="imagen-gasto">Imagen de referencia (opcional)
                     <input type="file" name="foto">
@@ -81,7 +81,7 @@
                 </label>
                 <input type="hidden" name="categoria" id="categoria_fijo_id">
 
-                <input type="date" name="fecha" value="{% now 'DATE_FORMAT' %}" class="fecha-gasto">
+                <input type="date" name="fecha" value="{% now 'Y-m-d' %}" class="fecha-gasto">
                 <textarea name="nota" placeholder="Nota (opcional)" class="nota-gasto"></textarea>
                 <label class="imagen-gasto">Imagen de referencia (opcional)
                     <input type="file" name="foto">
@@ -118,7 +118,7 @@
                 </label>
                 <input type="hidden" name="categoria" id="categoria_ingreso_id">
 
-                <input type="date" name="fecha" value="{% now 'DATE_FORMAT' %}" class="fecha-gasto">
+                <input type="date" name="fecha" value="{% now 'Y-m-d' %}" class="fecha-gasto">
                 <textarea name="nota" placeholder="Nota (opcional)" class="nota-gasto"></textarea>
                 <label class="imagen-gasto">Imagen de referencia (opcional)
                     <input type="file" name="foto">

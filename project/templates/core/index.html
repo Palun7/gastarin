@@ -12,9 +12,15 @@
         {% endif %}
         {% if user.is_authenticated %}
             <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
+            <div class="filtros display-none" id="filtros">
+                <a href="?filtro=dia" class="{% if filtro_activo == 'dia' %}activo{% endif %}">Hoy</a>
+                <a href="?filtro=mes" class="{% if filtro_activo == 'mes' %}activo{% endif %}">Mes</a>
+                <a href="?filtro=anio" class="{% if filtro_activo == 'anio' %}activo{% endif %}">Año</a>
+                <a href="?filtro=historico" class="{% if filtro_activo == 'historico' %}activo{% endif %}">Histórico</a>
+            </div>
             <div class="tarjeta-resumen">
                 <div class="resumen">
-                    <h4>{{ mes }}</h4>
+                    <h4>{{ titulo }}<svg xmlns="http://www.w3.org/2000/svg" id="svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-adjustments-horizontal"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 6l8 0" /><path d="M16 6l4 0" /><path d="M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 12l2 0" /><path d="M10 12l10 0" /><path d="M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 18l11 0" /><path d="M19 18l1 0" /></svg></h4>
                     <h5>Saldo actual</h5>
                     {% if saldo_rojo %}
                         <p class="saldo_rojo">${{ saldo_rojo }}</p>
@@ -40,3 +46,7 @@
         {% endif %}
     </main>
 {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/index.js' %}"></script>
+{% endblock scripts %}

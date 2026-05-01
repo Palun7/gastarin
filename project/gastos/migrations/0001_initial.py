@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nombre', models.CharField(max_length=30)),
-                ('icono', models.ImageField(upload_to='categorias/', validators=[gastos.models.validar_tamano])),
+                ('icono', models.ImageField(upload_to='categorias/')),
             ],
             options={
                 'verbose_name': 'Categoría',

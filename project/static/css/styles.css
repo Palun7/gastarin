@@ -248,7 +248,7 @@ footer {
         text-align: center;
     }
 
-    a {
+    .agregar-gasto {
         margin-top: 10vh;
         text-decoration: none;
         transition-duration: .5s;
@@ -290,9 +290,15 @@ footer {
     gap: .5em;
 
     h4 {
+        display: flex;
+        gap: 10px;
+        align-items: center;
         position: absolute;
         right: 0;
         color: var(--Azul-claro);
+        svg {
+            color: black;
+        }
     }
 
     h5 {
@@ -306,6 +312,25 @@ footer {
 
     .saldo_rojo {
         color: var(--Rojo);
+    }
+}
+
+.filtros {
+    position: relative;
+    top: 1em;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+
+    a {
+        text-decoration: none;
+        color: var(--Gris-claro);
+    }
+
+    .activo {
+        color: var(--Lavanda);
+        font-weight: 800;
+        text-decoration: underline;
     }
 }
 
@@ -649,9 +674,11 @@ footer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
     gap: 6px;
-    min-width: 72px;
+    min-width: 7em;
+    height: 7em;
     padding: 12px 8px;
 
     border: none;
@@ -670,7 +697,7 @@ footer {
 .categoria .texto, .categoria_fijo .texto, .categoria_ingreso .texto {
     font-size: 12px;
     color: #6B6CA5;
-    white-space: nowrap;
+    white-space: wrap;
 }
 
 .categoria.active, .categoria_fijo.active, .categoria_ingreso.active {

@@ -4,79 +4,75 @@ from django.db.models import Sum
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
-def transformar_mes(numero):
-    numero = str(numero)
-    if numero == '1':
-        return 'Enero'
-    elif numero == '2':
-        return 'Febrero'
-    elif numero == '3':
-        return 'Marzo'
-    elif numero == '4':
-        return 'Abril'
-    elif numero == '5':
-        return 'Mayo'
-    elif numero == '6':
-        return 'Junio'
-    elif numero == '7':
-        return 'Julio'
-    elif numero == '8':
-        return 'Agosto'
-    elif numero == '9':
-        return 'Septiembre'
-    elif numero == '10':
-        return 'Octubre'
-    elif numero == '11':
-        return 'Noviembre'
-    elif numero == '12':
-        return 'Diciembre'
 
-@login_required
+def transformar_mes(numero):
+    meses = {
+        1: 'Enero', 2: 'Febrero', 3: 'Marzo',
+        4: 'Abril', 5: 'Mayo', 6: 'Junio',
+        7: 'Julio', 8: 'Agosto', 9: 'Septiembre',
+        10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'
+    }
+    return meses.get(numero)
+
+
+@login_required(login_url='usuarios:login-registro')
 def index(request):
     hoy = timezone.now()
 
-    # valores por defecto (si no pasan nada)
-    year = request.GET.get('year') or hoy.year
-    month = request.GET.get('month')
-    day = request.GET.get('day')
+    # 👉 tipo de filtro (default: mes)
+    filtro_tipo = request.GET.get('filtro', 'mes')
 
-    mes = transformar_mes(hoy.month)
-
+    # 👉 base de filtros
     filtros = {
         'usuario': request.user,
-        'fecha__year': year
     }
 
-    if month:
-        filtros['fecha__month'] = month
+    # 👉 aplicar filtros según tipo
+    if filtro_tipo == 'dia':
+        filtros['fecha__year'] = hoy.year
+        filtros['fecha__month'] = hoy.month
+        filtros['fecha__day'] = hoy.day
+        titulo = "Hoy"
 
-    if day:
-        filtros['fecha__day'] = day
+    elif filtro_tipo == 'mes':
+        filtros['fecha__year'] = hoy.year
+        filtros['fecha__month'] = hoy.month
+        titulo = transformar_mes(hoy.month)
 
-    # ingresos
+    elif filtro_tipo == 'anio':
+        filtros['fecha__year'] = hoy.year
+        titulo = f"Año {hoy.year}"
+
+    elif filtro_tipo == 'historico':
+        titulo = "Histórico"
+
+    else:
+        # fallback por si viene algo raro
+        filtros['fecha__year'] = hoy.year
+        filtros['fecha__month'] = hoy.month
+        titulo = transformar_mes(hoy.month)
+
+    # 👉 consultas
     ingreso_total = Ingreso.objects.filter(**filtros)\
         .aggregate(total=Sum('monto'))['total'] or 0
 
-    # gastos
     gasto_diario = Gasto.objects.filter(**filtros)\
         .aggregate(total=Sum('monto'))['total'] or 0
 
-    # gastos fijos
     gasto_fijo = Gasto_fijo.objects.filter(**filtros)\
         .aggregate(total=Sum('monto'))['total'] or 0
 
-    # saldo final
-    saldo = ingreso_total - (gasto_diario + gasto_fijo)
-
+    # 👉 cálculos
     gasto_total = gasto_diario + gasto_fijo
+    saldo = ingreso_total - gasto_total
 
-    if saldo < 0:
-        saldo_rojo = saldo
+    saldo_rojo = saldo if saldo < 0 else None
 
     return render(request, 'core/index.html', {
         'ingreso': ingreso_total,
         'gasto_total': gasto_total,
         'saldo': saldo,
-        'saldo_rojo':saldo_rojo,
-        'mes': mes,
+        'saldo_rojo': saldo_rojo,
+        'titulo': titulo,
+        'filtro_activo': filtro_tipo,  # 👈 útil para el front
     })
