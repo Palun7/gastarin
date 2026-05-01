@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Categoria, Gasto, Gasto_fijo, Ingreso, Categoria_ingreso
+from .models import Categoria, Gasto, Gasto_fijo, Ingreso, Categoria_ingreso, Cuota
+from decimal import Decimal
 
 @login_required
 def ingresar_gasto(request):
@@ -53,25 +54,38 @@ def ingresar_gasto(request):
         return redirect('core:index')
     elif 'gasto_fijo' in request.POST:
         usuario = request.user
-        monto = request.POST.get('monto')
-        cuotas = request.POST.get('cuotas') or False
+        monto = Decimal(request.POST.get('monto'))
+        cuotas = request.POST.get('cuotas')
         categoria_id = request.POST.get('categoria')
         fecha = request.POST.get('fecha')
         nota = request.POST.get('nota')
         foto = request.FILES.get('foto')
 
-
         categoria = Categoria.objects.get(id=categoria_id)
 
-        Gasto_fijo.objects.create(
+        # 👉 crear el gasto fijo
+        gasto = Gasto_fijo.objects.create(
             usuario=usuario,
             monto=monto,
-            cuotas=cuotas,
+            cuotas=cuotas if cuotas else None,
             categoria=categoria,
             fecha=fecha,
             nota=nota,
             foto=foto,
         )
+
+        # 👉 si tiene cuotas, crearlas
+        if cuotas:
+            cuotas = int(cuotas)
+            monto_cuota = monto / cuotas
+
+            for i in range(1, cuotas + 1):
+                Cuota.objects.create(
+                    gasto=gasto,
+                    numero=i,
+                    monto=round(monto_cuota, 2)
+                )
+
         return redirect('core:index')
     elif 'ingreso' in request.POST:
         usuario = request.user

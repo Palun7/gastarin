@@ -39,6 +39,31 @@
                     </div>
                 </div>
             </div>
+            {% if lista_cuotas %}
+                <div class="mostrar_cuotas">
+                    <h5>Gastos en cuotas</h5>
+
+                    {% for gasto in lista_cuotas %}
+                        <div class="gasto-cuotas">
+                            <p>Monto total: ${{ gasto.monto }}</p>
+
+                            {% for cuota in gasto.cuota_set.all %}
+                                <label>
+                                    Cuota {{ cuota.numero }}
+                                    <input 
+                                        type="checkbox"
+                                        class="checkbox-cuota"
+                                        data-id="{{ cuota.id }}"
+                                        {% if cuota.pagada %}checked{% endif %}
+                                    >
+                                </label>
+                            {% endfor %}
+
+                            <p>Cuotas: {{ gasto.cuotas }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <a href="{% url 'gastos:ingresar-gastos' %}" class="agregar-gasto">+</a>
         {% else %}
             <h1>Para controlar tus gastos debes iniciar sesión</h1>

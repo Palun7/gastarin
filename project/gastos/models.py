@@ -84,3 +84,16 @@ class Gasto_fijo(models.Model):
             return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.cuotas} - {self.nota}'
         else:
             return f'{self.usuario.username}: ${self.monto} {self.categoria.icono} - {self.categoria.nombre}'
+
+class Cuota(models.Model):
+    gasto = models.ForeignKey(Gasto_fijo, on_delete=models.CASCADE)
+    numero = models.IntegerField()
+    monto = models.DecimalField(max_digits=11, decimal_places=2)
+    pagada = models.BooleanField(default=False)
+
+    class Meta:
+            verbose_name = 'Cuota'
+            verbose_name_plural = 'Cuotas'
+
+    def __str__(self):
+        return f'{self.gasto} - Cuota {self.numero}'
