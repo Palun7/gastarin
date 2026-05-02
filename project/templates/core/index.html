@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
+{% load l10n %}
 
 {% block title %}
     Gastarin - Control de gastos
@@ -10,65 +12,115 @@
         {% if exito %}
             <p class="exito" id="exito">{{ exito }}</p>
         {% endif %}
-        {% if user.is_authenticated %}
-            <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
-            <div class="filtros display-none" id="filtros">
-                <a href="?filtro=dia" class="{% if filtro_activo == 'dia' %}activo{% endif %}">Hoy</a>
-                <a href="?filtro=mes" class="{% if filtro_activo == 'mes' %}activo{% endif %}">Mes</a>
-                <a href="?filtro=anio" class="{% if filtro_activo == 'anio' %}activo{% endif %}">Año</a>
-                <a href="?filtro=historico" class="{% if filtro_activo == 'historico' %}activo{% endif %}">Histórico</a>
+        <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
+        <div class="filtros display-none" id="filtros">
+            <a href="?filtro=dia" class="{% if filtro_activo == 'dia' %}activo{% endif %}">Hoy</a>
+            <a href="?filtro=mes" class="{% if filtro_activo == 'mes' %}activo{% endif %}">Mes</a>
+            <a href="?filtro=anio" class="{% if filtro_activo == 'anio' %}activo{% endif %}">Año</a>
+            <a href="?filtro=historico" class="{% if filtro_activo == 'historico' %}activo{% endif %}">Histórico</a>
+        </div>
+        <div class="tarjeta-resumen">
+            <div class="resumen">
+                <h4>{{ titulo }}<svg xmlns="http://www.w3.org/2000/svg" id="svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-adjustments-horizontal"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 6l8 0" /><path d="M16 6l4 0" /><path d="M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 12l2 0" /><path d="M10 12l10 0" /><path d="M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 18l11 0" /><path d="M19 18l1 0" /></svg></h4>
+                <h5>Saldo actual</h5>
+                {% if saldo_rojo %}
+                    <p class="saldo_rojo">${{ saldo_rojo|intcomma    }}</p>
+                {% else %}
+                    <p class="saldo">${{ saldo|intcomma }}</p>
+                {% endif %}
             </div>
-            <div class="tarjeta-resumen">
-                <div class="resumen">
-                    <h4>{{ titulo }}<svg xmlns="http://www.w3.org/2000/svg" id="svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-adjustments-horizontal"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 6l8 0" /><path d="M16 6l4 0" /><path d="M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 12l2 0" /><path d="M10 12l10 0" /><path d="M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 18l11 0" /><path d="M19 18l1 0" /></svg></h4>
-                    <h5>Saldo actual</h5>
-                    {% if saldo_rojo %}
-                        <p class="saldo_rojo">${{ saldo_rojo }}</p>
-                    {% else %}
-                        <p class="saldo">${{ saldo }}</p>
-                    {% endif %}
+            <div class="ingresos-gastos">
+                <div class="ingresos-index">
+                    <h6>Ingresos</h6>
+                    <p>${{ ingreso|intcomma }}</p>
                 </div>
-                <div class="ingresos-gastos">
-                    <div class="ingresos-index">
-                        <h6>Ingresos</h6>
-                        <p>${{ ingreso }}</p>
-                    </div>
-                    <div class="gastos">
-                        <h6>Gastos</h6>
-                        <p>${{ gasto_total }}</p>
-                    </div>
+                <div class="gastos">
+                    <h6>Gastos</h6>
+                    <p>${{ gasto_total|intcomma }}</p>
                 </div>
             </div>
-            {% if lista_cuotas %}
-                <div class="mostrar_cuotas">
-                    <h5>Gastos en cuotas</h5>
-
+        </div>
+        {% if lista_cuotas %}
+            <div class="mostrar_cuotas sombra">
+                <h5>Gastos en cuotas</h5>
+                <p class="cantidad">Cantidad de gastos: {{ cantidad }}</p>
+                <div class="tarjeta-cuotas">
                     {% for gasto in lista_cuotas %}
                         <div class="gasto-cuotas">
-                            <p>Monto total: ${{ gasto.monto }}</p>
-
-                            {% for cuota in gasto.cuota_set.all %}
-                                <label>
-                                    Cuota {{ cuota.numero }}
-                                    <input 
-                                        type="checkbox"
-                                        class="checkbox-cuota"
-                                        data-id="{{ cuota.id }}"
-                                        {% if cuota.pagada %}checked{% endif %}
-                                    >
-                                </label>
-                            {% endfor %}
-
+                            <p>Monto total: ${{ gasto.monto|intcomma }}</p>
+                            <p>Categoria: {{ gasto.categoria }}</p>
+                            {% if gasto.nota %}
+                                <p>Nota: {{ gasto.nota }}</p>
+                            {% endif %}
+                            {% if gasto.foto %}
+                                <button class="boton-abrir-foto" id="boton_abrir_foto">Ver foto de referencia</button>
+                                <div class="foto-referencia-contenedor display-none" id="foto_referencia_contenedor">
+                                    <button class="boton-cerrar-foto" id="boton_cerrar_foto">X</button>
+                                    <img src="{{ gasto.foto.url }}" alt="Foto de referencia" class="foto-referencia">
+                                </div>
+                            {% endif %}
                             <p>Cuotas: {{ gasto.cuotas }}</p>
+                            <div class="cuotas">
+                                {% for cuota in gasto.cuota_set.all %}
+                                    <label>
+                                        <p>Cuota {{ cuota.numero }}</p>
+                                        <input 
+                                            type="checkbox"
+                                            class="checkbox-cuota"
+                                            data-id="{{ cuota.id }}"
+                                            {% if cuota.pagada %}checked{% endif %}
+                                        >
+                                    </label>
+                                {% endfor %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
-            {% endif %}
-            <a href="{% url 'gastos:ingresar-gastos' %}" class="agregar-gasto">+</a>
-        {% else %}
-            <h1>Para controlar tus gastos debes iniciar sesión</h1>
-            <a href="{% url 'usuarios:login-registro' %}" class="volver">Ingresar - Registrarse</a>
+            </div>
         {% endif %}
+        <div class="ver-gastos-ingresos sombra">
+            <div class="ver-gastos">
+                <h5>Gastos realizados</h5>
+                <div class="gastos-general">
+                    {% for gastos in lista_gastos_diarios %}
+                        <div class="gasto-mostrado">
+                            <p>{{ gastos.categoria }}</p>
+                            {% if gastos.nota %}
+                                <p>{{ gastos.nota }}</p>
+                            {% endif %}
+                            <p>${{ gastos.monto|intcomma }}</p>
+                        </div>
+                        {% endfor %}
+                        {% for gastos in lista_gastos_fijos %}
+                        <div class="gasto-fijo-mostrado">
+                            <p>{{ gastos.categoria }}</p>
+                            {% if gastos.nota %}
+                                <p>{{ gastos.nota }}</p>
+                            {% endif %}
+                            <p>${{ gastos.monto|intcomma }}</p>
+                            {% if gastos.cuotas %}
+                                <p>
+                                    {{ gastos.cuotas }} Cuotas
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="ver-ingresos">
+                <h5>Ingresos registrados</h5>
+                {% for ingresos in lista_ingresos %}
+                    <div class="ingreso-mostrado">
+                        <p>{{ ingresos.categoria }}</p>
+                        {% if ingresos.nota %}
+                            <p>{{ ingresos.nota }}</p>
+                        {% endif %}
+                        <p>${{ ingresos.monto|intcomma }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <a href="{% url 'gastos:ingresar-gastos' %}" class="agregar-gasto">+</a>
     </main>
 {% endblock content %}
 

@@ -21,6 +21,7 @@
     --Azul-violeta: #7A6FF0;
     --Lavanda: #A78BFA;
     --Violeta-claro: #C4B5FD;
+    --Violeta-mas-claro: #ebddfe;
     --Gris-claro: #767676;
     --Rojo: #ff8989;
 }
@@ -374,7 +375,8 @@ footer {
 
 .agregar-gasto {
     position: absolute;
-    bottom: 2em;
+    top: -1.5em;
+    right: 5em;
     font-weight: 700;
     padding: 4px 10px;
     border-radius: 999px;
@@ -387,6 +389,198 @@ footer {
     color: rgb(12, 185, 6);
     font-size: 1.1em;
     transition-duration: 1s;
+}
+
+.mostrar_cuotas {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 30px;
+    background-color: white;
+    border-radius: 15px;
+    width: 85vw;
+    margin-top: 2em;
+
+    h5 {
+        color: var(--Gris-claro);
+    }
+
+    .cantidad {
+        font-size: .8em;
+        color: var(--Gris-claro);
+        font-weight: bolder;
+    }
+
+    .tarjeta-cuotas {
+        display: flex;
+        gap: 1em;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+
+        .gasto-cuotas {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: .5px solid var(--Gris-claro);
+            border-radius: 15px;
+            padding: 10px;
+            background-color: rgb(238, 238, 238);
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            width: 100%;
+
+            .cuotas {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                gap: 10px;
+
+                label {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 20px;
+                    padding: 10px;
+                    border-radius: 15px;
+                    background-color: var(--Violeta-mas-claro);
+                    flex-wrap: nowrap;
+                    min-width: 85px;
+                    height: 90px;
+                    flex: 0 0 20%;
+                    scroll-snap-align: center;
+
+                    p {
+                        text-wrap: nowrap;
+                    }
+
+                    .checkbox-cuota {
+                        border: none;
+                        border-radius: 15px;
+                        transform: scale(2);
+                    }
+
+                }
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+            }
+
+            .boton-abrir-foto {
+                color: white;
+                border: none;
+                padding: 15px;
+                width: fit-content;
+                border-radius: 15px;
+                background: linear-gradient(to right, var(--Azul-claro), var(--Lavanda));
+            }
+
+        }
+    }
+
+    .tarjeta-cuotas::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.foto-referencia-contenedor {
+    position: absolute;
+    z-index: 1500;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 95vh;
+    background-color: rgba(0, 0, 0, 0.188);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .foto-referencia {
+        width: 60vw;
+    }
+
+    .boton-cerrar-foto {
+        z-index: 1600;
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        width: 50px;
+        height: 50px;
+        border: .5px solid black;
+        border-radius: 15px;
+        background-color: white;
+        font-size: 1.5em;
+    }
+}
+
+.ver-gastos-ingresos {
+    display: flex;
+    overflow: auto;
+    gap: 20px;
+    width: 85vw;
+    height: 40vh;
+    overflow: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.517);
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+
+    .ver-gastos, .ver-ingresos {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        background-color: var(--Violeta-mas-claro);
+        padding: 10px;
+        border-radius: 15px;
+        min-width: 72vw;
+        overflow: auto;
+        height: 100%;
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+
+        .gastos-general {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .gasto-mostrado, .gasto-fijo-mostrado {
+                background-color: white;
+                border-radius: 15px;
+                padding: 5px;
+                display: flex;
+                gap: 5px;
+                flex-wrap: nowrap;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .ingreso-mostrado {
+            background-color: white;
+            border-radius: 15px;
+            padding: 5px;
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 /* Fin Core */
@@ -823,5 +1017,19 @@ footer {
 .selector_derecha {
     left: 100%;
     transform: translate(-100%);
+}
+
+.gastos-fijos {
+    display: flex;
+    gap: 2em;
+    width: 80vw;
+    overflow-x: auto;
+
+    .gasto-fijo {
+        background-color: white;
+        padding: 2em;
+        border-radius: 15px;
+        height: fit-content;
+    }
 }
 /* Fin Gastos  */

@@ -37,3 +37,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+const boton_abrir_foto = document.getElementById('boton_abrir_foto');
+
+boton_abrir_foto.addEventListener('click', () => {
+    const foto_referencia_contenedor = document.getElementById('foto_referencia_contenedor');
+    const boton_cerrar_foto = document.getElementById('boton_cerrar_foto');
+    foto_referencia_contenedor.classList.remove('display-none');
+    boton_cerrar_foto.addEventListener('click', () => {
+        foto_referencia_contenedor.classList.add('display-none');
+    })
+})

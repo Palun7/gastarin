@@ -113,4 +113,5 @@ def ingresar_gasto(request):
 
 @login_required
 def gastos(request):
-    return render(request, 'gastos/gastos.html')
+    gastos_fijos = Gasto_fijo.objects.filter(usuario=request.user)
+    return render(request, 'gastos/gastos.html', {'gastos_fijos':gastos_fijos})

@@ -51,11 +51,9 @@ def index(request):
         filtros['fecha__month'] = hoy.month
         titulo = transformar_mes(hoy.month)
 
-    # ✅ INGRESOS
     ingreso_total = Ingreso.objects.filter(**filtros)\
         .aggregate(total=Sum('monto'))['total'] or 0
 
-    # ✅ FILTROS PARA CUOTAS (ACÁ ESTÁ EL CAMBIO)
     filtros_cuotas = {
         'gasto__usuario': request.user,
         'pagada': True
@@ -73,13 +71,9 @@ def index(request):
     elif filtro_tipo == 'anio':
         filtros_cuotas['gasto__fecha__year'] = hoy.year
 
-    # histórico no necesita filtros de fecha
-
-    # ✅ SUMA SOLO CUOTAS PAGADAS
     gasto_cuotas = Cuota.objects.filter(**filtros_cuotas)\
         .aggregate(total=Sum('monto'))['total'] or 0
 
-    # gastos normales
     gasto_diario = Gasto.objects.filter(**filtros)\
         .aggregate(total=Sum('monto'))['total'] or 0
 
@@ -87,7 +81,6 @@ def index(request):
     saldo = ingreso_total - gasto_total
     saldo_rojo = saldo if saldo < 0 else None
 
-    # ✅ SOLO GASTOS CON CUOTAS
     lista_cuotas = Gasto_fijo.objects.filter(
         usuario=request.user,
         cuotas__isnull=False
@@ -95,8 +88,14 @@ def index(request):
         total_cuotas=Count('cuota'),
         cuotas_pagadas=Count('cuota', filter=Q(cuota__pagada=True))
     ).exclude(
-        total_cuotas=F('cuotas_pagadas')  # 👈 elimina los completamente pagos
+        total_cuotas=F('cuotas_pagadas')
     )
+
+    cantidad = len(lista_cuotas)
+
+    lista_gastos_diarios = Gasto.objects.filter(**filtros)
+    lista_gastos_fijos = Gasto_fijo.objects.filter(**filtros)
+    lista_ingresos = Ingreso.objects.filter(**filtros)
 
     return render(request, 'core/index.html', {
         'ingreso': ingreso_total,
@@ -106,6 +105,10 @@ def index(request):
         'titulo': titulo,
         'filtro_activo': filtro_tipo,
         'lista_cuotas': lista_cuotas,
+        'cantidad': cantidad,
+        'lista_gastos_diarios': lista_gastos_diarios,
+        'lista_gastos_fijos': lista_gastos_fijos,
+        'lista_ingresos': lista_ingresos,
     })
 
 @require_POST

@@ -12,7 +12,7 @@ class Categoria(models.Model):
         verbose_name_plural = 'Categorías'
 
     def __str__(self):
-        return f'{self.nombre} {self.icono} ({self.usuario})'
+        return f'{self.nombre} {self.icono}'
 
 class Categoria_ingreso(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -24,7 +24,7 @@ class Categoria_ingreso(models.Model):
         verbose_name_plural = 'Categorías ingreso'
 
     def __str__(self):
-        return f'{self.nombre} {self.icono} ({self.usuario})'
+        return f'{self.nombre} {self.icono}'
 
 class Gasto(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)

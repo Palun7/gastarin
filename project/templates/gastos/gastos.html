@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
     Gastarin - Gastos
@@ -9,5 +10,14 @@
     <main class="main-gastos">
         <a href="{% url 'gastos:ingresar-gastos' %}" class="volver">Ingresar Gasto</a>
         <h1>Gastos</h1>
+        <div class="gastos-fijos">
+            {% for gasto_fijo in gastos_fijos %}
+                <div class="gasto-fijo">
+                    <h4>Montos fijos</h4>
+                    <h5>Monto: ${{ gasto_fijo.monto|intcomma|cut:","|add:"." }}</h5>
+                    <p>Cuotas: {{ gasto_fijo.cuotas }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </main>
 {% endblock content %}
