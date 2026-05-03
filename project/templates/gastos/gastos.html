@@ -3,21 +3,105 @@
 {% load humanize %}
 
 {% block title %}
-    Gastarin - Gastos
+    Gastarin - Gastos/Ingresos
 {% endblock title %}
 
 {% block content %}
     <main class="main-gastos">
-        <a href="{% url 'gastos:ingresar-gastos' %}" class="volver">Ingresar Gasto</a>
-        <h1>Gastos</h1>
-        <div class="gastos-fijos">
-            {% for gasto_fijo in gastos_fijos %}
-                <div class="gasto-fijo">
-                    <h4>Montos fijos</h4>
-                    <h5>Monto: ${{ gasto_fijo.monto|intcomma|cut:","|add:"." }}</h5>
-                    <p>Cuotas: {{ gasto_fijo.cuotas }}</p>
-                </div>
-            {% endfor %}
+        <a href="{% url 'gastos:ingresar-gastos' %}" class="volver">Ingresar Gasto/Ingreso</a>
+        <div class="filtros" id="filtros">
+            <a href="?filtro=dia" class="{% if filtro_activo == 'dia' %}activo{% endif %}">Hoy</a>
+            <a href="?filtro=mes" class="{% if filtro_activo == 'mes' %}activo{% endif %}">Mes</a>
+            <a href="?filtro=anio" class="{% if filtro_activo == 'anio' %}activo{% endif %}">Año</a>
+            <a href="?filtro=historico" class="{% if filtro_activo == 'historico' %}activo{% endif %}">Histórico</a>
+        </div>
+        <h2>Gastos</h2>
+        <div class="gastos-fijos-gastos">
+            <h4>Montos fijos</h4>
+            <div class="gasto-fijo-gastos">
+                {% for gasto_fijo in gastos_fijos %}
+                    <div class="gasto-fijo-for">
+                        <p>${{ gasto_fijo.monto|intcomma}}</p>
+                        <p>{{ gasto_fijo.categoria }}</p>
+                        {% if gasto_fijo.nota %}
+                            <p>Nota: {{ gasto_fijo.nota }}</p>
+                        {% endif %}
+                        {% if gasto_fijo.cuotas %}
+                            <p>Cuotas: {{ gasto_fijo.cuotas }}</p>
+                        {% endif %}
+                        {% if gasto_fijo.foto %}
+                            <button class="boton-abrir-foto" id="boton_abrir_foto">Ver foto de referencia</button>
+                            <div class="foto-referencia-contenedor display-none" id="foto_referencia_contenedor">
+                                <button class="boton-cerrar-foto" id="boton_cerrar_foto">X</button>
+                                <img src="{{ gasto_fijo.foto.url }}" alt="Foto de referencia" class="foto-referencia">
+                            </div>
+                        {% endif %}
+                        <a href="#" class="editar-gasto" data-id="{{ gasto_fijo.id }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                <path d="M13.5 6.5l4 4" />
+                            </svg>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="modal-editar" class="modal">
+            <div class="modal-content">
+                <button class="boton-cerrar-modal" id="boton_cerrar_modal">X</button>
+                <h3>Editar gasto</h3>
+                <form id="form-editar" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <input type="hidden" id="edit-id">
+
+                    <!-- MONTO -->
+                    <label class="monto">Monto
+                        <div>
+                            <p>$</p>
+                            <input type="number" id="edit-monto" name="monto" required>
+                        </div>
+                    </label>
+
+                    <!-- CUOTAS -->
+                    <label class="monto">Cuotas
+                        <input type="number" id="edit-cuotas" name="cuotas">
+                    </label>
+
+                    <!-- CATEGORIA -->
+                    <label>Categoría
+                        <select id="edit-categoria" name="categoria">
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">
+                                    {{ categoria.icono }} {{ categoria.nombre }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <!-- FECHA -->
+                    <input type="date" id="edit-fecha" name="fecha">
+
+                    <!-- NOTA -->
+                    <textarea id="edit-nota" name="nota" placeholder="Nota"></textarea>
+
+                    <!-- FOTO -->
+                    <label>Imagen
+                        <input type="file" id="edit-foto" name="foto">
+                    </label>
+
+                    <label> Eliminar Foto
+                        <input type="checkbox" name="eliminar_foto">
+                    </label>
+
+                    <button type="submit" class="volver">Guardar cambios</button>
+                </form>
+            </div>
         </div>
     </main>
 {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/gastos.js' %}"></script>
+{% endblock scripts %}
