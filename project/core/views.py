@@ -93,9 +93,9 @@ def index(request):
 
     cantidad = len(lista_cuotas)
 
-    lista_gastos_diarios = Gasto.objects.filter(**filtros)
-    lista_gastos_fijos = Gasto_fijo.objects.filter(**filtros)
-    lista_ingresos = Ingreso.objects.filter(**filtros)
+    lista_gastos_diarios = Gasto.objects.filter(**filtros).order_by('-fecha')[:5]
+    lista_gastos_fijos = Gasto_fijo.objects.filter(**filtros).order_by('-fecha')[:5]
+    lista_ingresos = Ingreso.objects.filter(**filtros).order_by('-fecha')[:5]
 
     return render(request, 'core/index.html', {
         'ingreso': ingreso_total,

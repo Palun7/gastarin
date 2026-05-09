@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Perfil
+{% endblock title %}
+
+{% block content %}
+    <main class="perfil">
+        <div class="muestra-datos">
+            <div class="foto-perfil-contenedor">
+                {% if user.foto %}
+                    <img src="{{ user.foto.url }}" alt="Foto de perfil" class="foto-perfil">
+                {% else %}
+                    <img src="{% static 'img/icono_gastarin.png' %}" alt="Sin foto de perfil" class="foto-perfil">
+                {% endif %}
+            </div>
+            <div class="datos-perfil">
+                <h3>{{ user.username }}</h3>
+                <p>{{ user.first_name }}, {{ user.last_name }}</p>
+                <p>{{ user.email }}</p>
+                <p>Tel: {{ user.telefono }}</p>
+                <a href="#" class="boton-editar-datos-perfil">Editar Datos</a>
+            </div>
+        </div>
+        <div class="proximamente">
+            <h4>Proximamente editar categoria</h4>
+        </div>
+        <div class="editar-datos-perfil display-none">
+            <a href="#" class="boton-cerrar-editar-perfil">X</a>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3>Editar Datos</h3>
+                <input type="text" name="username" placeholder="Nombre de Usuario" value="{{ user.username }}">
+                <input type="password" name="password_actual" id="password" placeholder="Contraseña vieja (opcional)">
+                <input type="password" name="password" id="confirm_password" placeholder="Contaseña nueva (opcional)">
+                <div id="error_password" class="display-none">
+                    <p>Las contraseñas no coinciden</p>
+                </div>
+                <input type="text" name="first_name" placeholder="Nombre" value="{{ user.first_name }}">
+                <input type="text" name="last_name" placeholder="Apellido" value="{{ user.last_name }}">
+                <input type="text" name="email" placeholder="Mail" value="{{ user.email }}">
+                <input type="number" name="telefono" placeholder="Telefono" value="{{ user.telefono }}">
+                <fieldset>
+                    <legend>Foto actual</legend>
+                    {% if user.foto %}
+                    <img src="{{ user.foto.url }}" class="foto-perfil"><br>
+                    {% else %}
+                    <p>No tenes foto de perfil</p><br>
+                    {% endif %}
+                </fieldset>
+                <label>
+                    <p>Nueva foto:</p>
+                    <input type="file" name="foto">
+                </label>
+
+                <button type="submit" name="registro">Editar Datos</button>
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+            </form>
+        </div>
+    </main>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/perfil.js' %}"></script>
+{% endblock scripts %}

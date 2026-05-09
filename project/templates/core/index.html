@@ -15,7 +15,8 @@
         <a href="#" class="boton-novedades">Novedades en la app</a>
         <div class="novedades display-none">
             <a href="#" class="boton-cerrar-novedades">X</a>
-            <p>Ya se pueden ver y editar los gastos e ingresos en la pestaña de administración</p>
+            <p>Ahora podes ingresar a <a href="{% url 'usuarios:perfil' %}"><strong>perfil</strong></a> y editar tus datos personales</p>
+            <p>Ya se pueden ver y editar los gastos e ingresos en la pestaña de <a href="{% url 'gastos:gastos' %}"><strong>administración</strong></a></p>
         </div>
         <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
         <div class="filtros display-none" id="filtros">
@@ -85,19 +86,23 @@
         {% endif %}
         <div class="ver-gastos-ingresos sombra">
             <div class="ver-gastos">
-                <h5>Gastos realizados</h5>
+                <h5>Últimos Gastos realizados</h5>
                 <div class="gastos-general">
+                    <p>Diarios</p>
                     {% for gastos in lista_gastos_diarios %}
                         <div class="gasto-mostrado">
+                            <p>{{ gastos.fecha }}</p>
                             <p>{{ gastos.categoria }}</p>
                             {% if gastos.nota %}
                                 <p>{{ gastos.nota }}</p>
                             {% endif %}
                             <p>${{ gastos.monto|intcomma }}</p>
                         </div>
-                        {% endfor %}
-                        {% for gastos in lista_gastos_fijos %}
+                    {% endfor %}
+                    <p>Fijos</p>
+                    {% for gastos in lista_gastos_fijos %}
                         <div class="gasto-fijo-mostrado">
+                            <p>{{ gastos.fecha }}</p>
                             <p>{{ gastos.categoria }}</p>
                             {% if gastos.nota %}
                                 <p>{{ gastos.nota }}</p>
@@ -110,6 +115,7 @@
                             {% endif %}
                         </div>
                     {% endfor %}
+                    <a href="{% url 'gastos:gastos' %}" class="ver-mas">Ver más...</a>
                 </div>
             </div>
             <div class="ver-ingresos">
@@ -123,6 +129,7 @@
                         <p>${{ ingresos.monto|intcomma }}</p>
                     </div>
                 {% endfor %}
+                <a href="{% url 'gastos:gastos' %}" class="ver-mas">Ver más...</a>
             </div>
         </div>
         <a href="{% url 'gastos:ingresar-gastos' %}" class="agregar-gasto">+</a>

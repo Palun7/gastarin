@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .models import Usuario
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import update_session_auth_hash
+import os
+
 
 def logout_view(request):
     logout(request)
@@ -56,3 +61,33 @@ def login_registro(request):
                 })
 
     return render(request, 'usuarios/login-registro.html')
+
+@login_required
+def perfil(request):
+    user = request.user
+
+    if request.method == 'POST':
+        user.username = request.POST.get('username')
+        user.email = request.POST.get('email')
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.telefono = request.POST.get('telefono')
+        password_actual = request.POST.get('password_actual')
+        password = request.POST.get('password')
+
+        if password:
+            if check_password(password_actual, user.password):
+                user.password = make_password(password)
+            else:
+                return render(request, 'usuarios/editar-perfil.html', {'usuario': user, 'error': 'Contraseña actual incorrecta'})
+
+        if request.FILES.get('foto'):
+            if user.foto:
+                if os.path.isfile(user.foto.path):
+                    os.remove(user.foto.path)
+            user.foto = request.FILES.get('foto')
+
+        user.save()
+        update_session_auth_hash(request, user)
+        return redirect('usuarios:perfil')
+    return render(request, 'usuarios/perfil.html')
