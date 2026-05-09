@@ -583,6 +583,56 @@ footer {
     }
 }
 
+.boton-novedades {
+    position: absolute;
+    top: 0;
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: rgb(255, 242, 215);
+
+}
+
+.novedades {
+    z-index: 2000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.298);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+    padding: 2em;
+
+    p {
+        width: 80%;
+        text-wrap: wrap;
+        font-size: 1em;
+        padding: 15px;
+        border-radius: 15px;
+        background-color: white;
+    }
+
+    .boton-cerrar-novedades {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-end;
+        text-decoration: none;
+        color: black;
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        background-color: white;
+        font-size: 1.7em;
+        font-weight: 500;
+    }
+}
+
 /* Fin Core */
 
 /* Login-Registro */
@@ -861,10 +911,11 @@ footer {
         display: flex;
         flex-direction: column;
         gap: 1em;
-        width: 80vw;
+        width: 90vw;
         background-color: white;
         padding: 30px;
         border-radius: 15px;
+        margin-bottom: 2vh;
 
         .gasto-fijo-gastos {
             overflow-x: auto;
@@ -883,14 +934,19 @@ footer {
                 gap: 5px;
                 background-color: var(--body-background);
                 min-width: 40vw;
-                height: 15em;
+                height: 17em;
                 border-radius: 15px;
                 padding: 10px;
                 padding-bottom: 30px;
                 flex: 0 0 70%;
                 scroll-snap-align: center;
 
-                .editar-gasto {
+                .fecha-gastos {
+                    position: absolute;
+                    top: 15px;
+                }
+
+                .editar-gasto, .editar-gasto-diario, .editar-ingreso {
                     position: absolute;
                     display: flex;
                     align-items: center;
@@ -915,6 +971,10 @@ footer {
     gap: 12px;
     overflow-x: auto;
     padding: 4px 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .categoria, .categoria_fijo, .categoria_ingreso {
@@ -979,6 +1039,8 @@ footer {
     padding: 20px;
     border-radius: 18px;
     width: 90%;
+    max-height: 95%;
+    overflow: auto;
     position: relative;
     background-color: var(--body-background);
 
@@ -988,6 +1050,7 @@ footer {
         flex-direction: column;
         gap: 10px;
         align-items: center;
+
         input {
             width: 95%;
             font-size: 1.3em;
@@ -999,6 +1062,65 @@ footer {
         button {
             margin-top: 1em !important;
             width: 70%;
+        }
+
+        .monto-modal {
+            div {
+                display: flex;
+                gap: 10px;
+
+                p {
+                    font-size: 1.7em;
+                    align-self: center;
+                }
+            }
+        }
+
+        .cuotas-modal {
+            position: relative;
+            left: .5em;
+        }
+
+        .categoria-modal {
+            width: 95%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 15px;
+            background-color: white;
+
+            select {
+                border: .5px solid black;
+                padding: 10px;
+                border-radius: 15px;
+                font-size: 1em;
+            }
+        }
+
+        .nota-modal {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 95%;
+            padding: 15px;
+            border-radius: 15px;
+            background-color: white;
+
+            textarea {
+                padding: 10px;
+                border-radius: 15px;
+            }
+        }
+
+        .foto-gasto-fijo-modal {
+            width: 95%;
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+            padding: 15px;
+            background-color: white;
+            border-radius: 15px;
         }
     }
 
@@ -1066,6 +1188,10 @@ footer {
     overflow-y: auto;
     transition-duration: .2s;
     grid-area: 2/1;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .btn_activo {
@@ -1087,17 +1213,7 @@ footer {
     transform: translate(-100%);
 }
 
-.gastos-fijos {
-    display: flex;
-    gap: 2em;
-    width: 80vw;
-    overflow-x: auto;
-
-    .gasto-fijo {
-        background-color: white;
-        padding: 2em;
-        border-radius: 15px;
-        height: fit-content;
-    }
+.sin-registro {
+    color: var(--Gris-claro);
 }
 /* Fin Gastos  */

@@ -16,9 +16,6 @@
         <div class="gastos-diarios">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <label class="monto">Monto
-                    <div><p>$</p><input type="number" name="monto" required></div>
-                </label>
                 <label class="label-categoria">Categoría
                     <div class="categorias">
                         {% for categoria in categorias %}
@@ -39,6 +36,9 @@
                         </button>
                     </div>
                 </label>
+                <label class="monto">Monto
+                    <div><p>$</p><input type="number" name="monto" required></div>
+                </label>
                 <input type="hidden" name="categoria" id="categoria_id">
 
                 <input type="date" name="fecha" value="{% now 'Y-m-d' %}" class="fecha-gasto">
@@ -53,12 +53,6 @@
         <div class="gastos-fijos display-none">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <label class="monto">Monto
-                    <div><p>$</p><input type="number" name="monto" required></div>
-                </label>
-                <label class="monto">Cuotas
-                    <input type="number" name="cuotas" placeholder="ej: Tarjeta/Prestamo (opcional)">
-                </label>
                 <label class="label-categoria">Categoría
                     <div class="categorias">
                         {% for categoria in categorias %}
@@ -79,6 +73,12 @@
                         </button>
                     </div>
                 </label>
+                <label class="monto">Monto
+                    <div><p>$</p><input type="number" name="monto" required></div>
+                </label>
+                <label class="monto">Cuotas
+                    <input type="number" name="cuotas" placeholder="ej: Tarjeta/Prestamo">
+                </label>
                 <input type="hidden" name="categoria" id="categoria_fijo_id">
 
                 <input type="date" name="fecha" value="{% now 'Y-m-d' %}" class="fecha-gasto">
@@ -93,9 +93,6 @@
         <div class="ingresos display-none">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <label class="monto">Monto
-                    <div><p>$</p><input type="number" name="monto" required></div>
-                </label>
                 <label class="label-categoria">Categoría
                     <div class="categorias">
                         {% for categoria in categorias_ingreso %}
@@ -115,6 +112,9 @@
                             <span class="texto">Nueva</span>
                         </button>
                     </div>
+                </label>
+                <label class="monto">Monto
+                    <div><p>$</p><input type="number" name="monto" required></div>
                 </label>
                 <input type="hidden" name="categoria" id="categoria_ingreso_id">
 

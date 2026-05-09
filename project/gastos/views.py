@@ -151,12 +151,21 @@ def gastos(request):
 
     gastos_fijos = Gasto_fijo.objects.filter(**filtros)
 
+    gastos_diarios = Gasto.objects.filter(**filtros)
+
+    ingresos = Ingreso.objects.filter(**filtros)
+
     categorias = Categoria.objects.filter(usuario=request.user)
+
+    categorias_ingreso = Categoria_ingreso.objects.filter(usuario=request.user)
 
     return render(request, 'gastos/gastos.html', {
         'gastos_fijos':gastos_fijos,
         'filtro_activo': filtro_tipo,
         'categorias': categorias,
+        'categorias_ingreso': categorias_ingreso,
+        'gastos_diarios': gastos_diarios,
+        'ingresos': ingresos,
         })
 
 def gasto_fijo_data(request, id):
@@ -167,7 +176,30 @@ def gasto_fijo_data(request, id):
         'cuotas': gasto.cuotas,
         'fecha': gasto.fecha.strftime('%Y-%m-%d'),
         'nota': gasto.nota,
+        'foto_url': gasto.foto.url if gasto.foto else None,
         'categoria': gasto.categoria.id, # type:ignore
+    })
+
+def gasto_diario_data(request, id):
+    gasto_diario = Gasto.objects.get(id=id)
+
+    return JsonResponse({
+        'monto': float(gasto_diario.monto),
+        'fecha': gasto_diario.fecha.strftime('%Y-%m-%d'),
+        'nota': gasto_diario.nota,
+        'foto_url': gasto_diario.foto.url if gasto_diario.foto else None,
+        'categoria': gasto_diario.categoria.id, # type:ignore
+    })
+
+def ingreso_data(request, id):
+    ingreso = Ingreso.objects.get(id=id)
+
+    return JsonResponse({
+        'monto': float(ingreso.monto),
+        'fecha': ingreso.fecha.strftime('%Y-%m-%d'),
+        'nota': ingreso.nota,
+        'foto_url': ingreso.foto.url if ingreso.foto else None,
+        'categoria': ingreso.categoria.id, # type:ignore
     })
 
 @require_POST
@@ -180,8 +212,6 @@ def editar_gasto_fijo(request, id):
     nota = request.POST.get('nota')
     categoria_id = request.POST.get('categoria')
     foto = request.FILES.get('foto')
-
-    print(foto)
 
     gasto.monto = monto
     gasto.fecha = fecha
@@ -217,6 +247,64 @@ def editar_gasto_fijo(request, id):
                     numero=i,
                     monto=round(monto_cuota, 2)
                 )
+
+    gasto.save()
+
+    return JsonResponse({'ok': True})
+
+@require_POST
+def editar_gasto_diario(request, id):
+    gasto = Gasto.objects.get(id=id)
+
+    monto = Decimal(request.POST.get('monto'))
+    fecha = request.POST.get('fecha')
+    nota = request.POST.get('nota')
+    categoria_id = request.POST.get('categoria')
+    foto = request.FILES.get('foto')
+
+    gasto.monto = monto
+    gasto.fecha = fecha
+    gasto.nota = nota
+
+    # categoría
+    if categoria_id:
+        gasto.categoria_id = int(categoria_id) #type:ignore
+
+    # foto
+    if foto:
+        gasto.foto = foto
+
+    if request.POST.get('eliminar_foto'):
+        gasto.foto.delete()
+
+    gasto.save()
+
+    return JsonResponse({'ok': True})
+
+@require_POST
+def editar_ingreso(request, id):
+    gasto = Ingreso.objects.get(id=id)
+
+    monto = Decimal(request.POST.get('monto'))
+    fecha = request.POST.get('fecha')
+    nota = request.POST.get('nota')
+    categoria_id = request.POST.get('categoria')
+    foto = request.FILES.get('foto')
+
+    gasto.monto = monto
+    gasto.fecha = fecha
+    gasto.nota = nota
+
+    # categoría
+    if categoria_id:
+        gasto.categoria_id = int(categoria_id) #type:ignore
+
+    # foto
+    if foto:
+        gasto.foto = foto
+
+    if request.POST.get('eliminar_foto'):
+        gasto.foto.delete()
 
     gasto.save()
 

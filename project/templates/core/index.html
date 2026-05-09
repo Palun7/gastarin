@@ -12,6 +12,11 @@
         {% if exito %}
             <p class="exito" id="exito">{{ exito }}</p>
         {% endif %}
+        <a href="#" class="boton-novedades">Novedades en la app</a>
+        <div class="novedades display-none">
+            <a href="#" class="boton-cerrar-novedades">X</a>
+            <p>Ya se pueden ver y editar los gastos e ingresos en la pestaña de administración</p>
+        </div>
         <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
         <div class="filtros display-none" id="filtros">
             <a href="?filtro=dia" class="{% if filtro_activo == 'dia' %}activo{% endif %}">Hoy</a>
