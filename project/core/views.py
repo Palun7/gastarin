@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from gastos.models import Gasto, Gasto_fijo, Ingreso, Cuota
 from django.db.models import Sum
 from django.utils import timezone
@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q, F
+from .models import Recomendaciones
 
 
 def transformar_mes(numero):
@@ -118,3 +119,30 @@ def toggle_cuota(request, cuota_id):
     cuota.save()
 
     return JsonResponse({'ok': True})
+
+def recomendaciones(request):
+    user = request.user
+
+    recomendaciones = Recomendaciones.objects.filter(usuario=user)
+
+    recomendaciones_admin = Recomendaciones.objects.all()
+
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo')
+        texto = request.POST.get('texto')
+        foto = request.FILES.get('foto')
+
+        Recomendaciones.objects.create(
+            usuario=user,
+            titulo=titulo,
+            texto=texto,
+            foto=foto,
+        )
+        return redirect('core:recomendaciones')
+
+
+
+    return render(request, 'core/recomendaciones.html', {
+        'recomendaciones':recomendaciones,
+        'recomendaciones_admin': recomendaciones_admin,
+    })

@@ -23,7 +23,7 @@
                     {% for gasto_fijo in gastos_fijos %}
                         <div class="gasto-fijo-for">
                             <p class="fecha-gastos"><strong>{{ gasto_fijo.fecha }}</strong></p>
-                            <p>${{ gasto_fijo.monto|intcomma}}</p>
+                            <p>${{ gasto_fijo.monto|floatformat:"-2" }}</p>
                             <p>{{ gasto_fijo.categoria }}</p>
                             {% if gasto_fijo.nota %}
                                 <p>Nota: {{ gasto_fijo.nota }}</p>
@@ -57,7 +57,7 @@
                     {% for gasto in gastos_diarios %}
                         <div class="gasto-fijo-for">
                             <p class="fecha-gastos"><strong>{{ gasto.fecha }}</strong></p>
-                            <p>${{ gasto.monto|intcomma}}</p>
+                            <p>${{ gasto.monto|floatformat:"-2" }}</p>
                             <p>{{ gasto.categoria }}</p>
                             {% if gasto.nota %}
                                 <p>Nota: {{ gasto.nota }}</p>
@@ -91,7 +91,7 @@
                     {% for ingreso in ingresos %}
                         <div class="gasto-fijo-for">
                             <p class="fecha-gastos"><strong>{{ ingreso.fecha }}</strong></p>
-                            <p>${{ ingreso.monto|intcomma}}</p>
+                            <p>${{ ingreso.monto|floatformat:"-2" }}</p>
                             <p>{{ ingreso.categoria }}</p>
                             {% if ingreso.nota %}
                                 <p>Nota: {{ ingreso.nota }}</p>

@@ -23,6 +23,7 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'usuarios:perfil' %}">Perfil</a></li>
                 <li><a href="{% url 'gastos:gastos' %}">Administraicón</a></li>
+                <li><a href="{% url 'core:recomendaciones' %}">Recomendaciones</a></li>
                 <li><a href="{% url 'usuarios:logout' %}">Cerrar Sesión</a></li>
                 {% else %}
                 <li><a href="{% url 'usuarios:login-registro' %}">Ingresar/Registrar</a></li>

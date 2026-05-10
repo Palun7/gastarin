@@ -10,12 +10,28 @@
         {
             "src": "/static/img/icon-192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/icon-512.png",
             "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Agregar gasto",
+            "url": "/gastos/agregar/"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/static/img/screenshot1.png",
+            "sizes": "540x720",
             "type": "image/png"
         }
-    ]
+    ],
+    "display_override": ["window-controls-overlay", "standalone"]
 }

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Recomendaciones
+{% endblock title %}
+
+{% block content %}
+    <main class="recomendaciones">
+        <h1>Recomendaciones</h1>
+        <a href="#" class="boton-recomendacion">Hacer una recomendación</a>
+        <div class="tus-recomendaciones sombra">
+            {% if recomendaciones and not user.is_superuser %}
+                <h2>Tus recomendaciones</h2>
+                {% for recomendacion in recomendaciones %}
+                    <div class="recomendacion sombra">
+                        <h3>{{ recomendacion.titulo }}</h3>
+                        <h5>Recomendación:</h5>
+                        <p>{{ recomendacion.texto }}</p>
+                        {% if recomendacion.foto %}
+                            <img src="{{ recomendacion.foto.url }}" alt="Foto de referencia de {{ recomendacion.titulo }}" class="foto-recomendacion">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% elif user.is_superuser %}
+                <h2>Recomendaciones</h2>
+                {% if recomendaciones_admin %}
+                    {% for recomendacion in recomendaciones_admin %}
+                    <div class="recomendacion sombra">
+                        <h3>Usuario: {{ recomendacion.usuario }}</h3>
+                        <h3>Título: {{ recomendacion.titulo }}</h3>
+                        <h5>Recomendación:</h5>
+                        <p>{{ recomendacion.texto }}</p>
+                        {% if recomendacion.foto %}
+                            <img src="{{ recomendacion.foto.url }}" alt="Foto de referencia de {{ recomendacion.titulo }}" class="foto-recomendacion">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <h4>No hay recomendaciones</h4>
+                {% endif %}
+            {% else %}
+                <h4>No hay contribuciones</h4>
+            {% endif %}
+        </div>
+        <div class="hacer-recomendacion display-none">
+            <a href="#" class="cerrar-recomendacion">X</a>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="titulo" placeholder="Título" required>
+                <textarea name="texto" placeholder="Recomendación" required></textarea>
+                <label>
+                    <p>Si tenes una foto de referencia</p>
+                    <input type="file" name="foto">
+                </label>
+                <button type="submit">Hacer Recomendación</button>
+            </form>
+        </div>
+    </main>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/recomendaciones.js' %}"></script>
+{% endblock scripts %}

@@ -149,11 +149,11 @@ def gastos(request):
         filtros['fecha__month'] = hoy.month
         titulo = transformar_mes(hoy.month)
 
-    gastos_fijos = Gasto_fijo.objects.filter(**filtros)
+    gastos_fijos = Gasto_fijo.objects.filter(**filtros).order_by('-fecha')
 
-    gastos_diarios = Gasto.objects.filter(**filtros)
+    gastos_diarios = Gasto.objects.filter(**filtros).order_by('-fecha')
 
-    ingresos = Ingreso.objects.filter(**filtros)
+    ingresos = Ingreso.objects.filter(**filtros).order_by('-fecha')
 
     categorias = Categoria.objects.filter(usuario=request.user)
 
