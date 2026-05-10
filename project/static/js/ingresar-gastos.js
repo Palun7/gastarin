@@ -1,3 +1,4 @@
+const tabGuardada = localStorage.getItem('tabActiva');
 const btn_diario = document.querySelector('.btn_diario')
 const btn_fijo = document.querySelector('.btn_fijo')
 const btn_ingreso = document.querySelector('.btn_ingreso')
@@ -6,41 +7,68 @@ const div_diarios = document.querySelector('.gastos-diarios')
 const div_fijos = document.querySelector('.gastos-fijos')
 const div_ingresos = document.querySelector('.ingresos')
 
-btn_diario.addEventListener('click', () => {
+function activarDiario() {
+
     selector.classList.remove('selector_centro');
     selector.classList.remove('selector_derecha');
     selector.classList.add('selector_izquierda');
-    setTimeout(() => {
+
     btn_fijo.classList.remove('btn_activo');
     btn_ingreso.classList.remove('btn_activo');
     btn_diario.classList.add('btn_activo');
-    check();
-    },100);
-})
 
-btn_fijo.addEventListener('click', () => {
+    check();
+
+    localStorage.setItem('tabActiva', 'diario');
+}
+
+function activarFijo() {
+
     selector.classList.remove('selector_izquierda');
     selector.classList.remove('selector_derecha');
     selector.classList.add('selector_centro');
-    setTimeout(() => {
-        btn_diario.classList.remove('btn_activo');
-        btn_ingreso.classList.remove('btn_activo');
-        btn_fijo.classList.add('btn_activo');
-        check();
-    },100);
-})
 
-btn_ingreso.addEventListener('click', () => {
+    btn_diario.classList.remove('btn_activo');
+    btn_ingreso.classList.remove('btn_activo');
+    btn_fijo.classList.add('btn_activo');
+
+    check();
+
+    localStorage.setItem('tabActiva', 'fijo');
+}
+
+function activarIngreso() {
+
     selector.classList.remove('selector_izquierda');
     selector.classList.remove('selector_centro');
     selector.classList.add('selector_derecha');
+
+    btn_fijo.classList.remove('btn_activo');
+    btn_diario.classList.remove('btn_activo');
+    btn_ingreso.classList.add('btn_activo');
+
+    check();
+
+    localStorage.setItem('tabActiva', 'ingreso');
+}
+
+btn_diario.addEventListener('click', () => {
     setTimeout(() => {
-        btn_fijo.classList.remove('btn_activo');
-        btn_diario.classList.remove('btn_activo');
-        btn_ingreso.classList.add('btn_activo');
-        check();
+        activarDiario();
     }, 100);
-})
+});
+
+btn_fijo.addEventListener('click', () => {
+    setTimeout(() => {
+        activarFijo();
+    }, 100);
+});
+
+btn_ingreso.addEventListener('click', () => {
+    setTimeout(() => {
+        activarIngreso();
+    }, 100);
+});
 
 function check(){
     if(btn_diario.classList.contains('btn_activo')){
@@ -177,3 +205,18 @@ document.querySelectorAll('.categoria_ingreso').forEach(btn => {
     });
 });
 
+window.addEventListener('DOMContentLoaded', () => {
+
+    if (tabGuardada === 'fijo') {
+        activarFijo();
+    }
+
+    else if (tabGuardada === 'ingreso') {
+        activarIngreso();
+    }
+
+    else {
+        activarDiario();
+    }
+
+});
