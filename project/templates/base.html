@@ -5,13 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="icon" href="{% static 'img/icono_gastarin.png' %}">
+    <meta name="theme-color" content="#1f2937">
     <title>
         {% block title %}
         {% endblock title %}
     </title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Gastarin">
+    <meta name="description" content="Gastarin es una aplicación web para gestionar gastos, ingresos y finanzas personales de forma simple y rápida.">
+    <link rel="icon" href="{% static 'img/icono_gastarin.png' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
     <script src="{% static 'js/header.js' %}" defer></script>
 </head>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/static/serviceworker.js')
+            .then(() => console.log('Service Worker registrado'))
+            .catch(error => console.log('Error:', error));
+    }
+</script>
 <body>
     {% include 'components/header.html' %}
 
