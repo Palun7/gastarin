@@ -446,10 +446,12 @@ footer {
                     padding: 10px;
                     border-radius: 15px;
                     background-color: var(--Violeta-mas-claro);
-                    flex-wrap: nowrap;
+
                     min-width: 85px;
                     height: 90px;
-                    flex: 0 0 20%;
+
+                    flex: 0 0 auto;
+
                     scroll-snap-align: center;
 
                     p {
@@ -461,12 +463,16 @@ footer {
                         border-radius: 15px;
                         transform: scale(2);
                     }
-
                 }
 
                 &::-webkit-scrollbar {
                     display: none;
                 }
+            }
+
+            .cuota-ultima-pagada {
+                outline: 2px solid #4caf50;
+                border-radius: 10px;
             }
 
         }
@@ -1406,6 +1412,7 @@ footer {
                 text-decoration: none;
                 color: black;
                 padding: 5px;
+                border: none;
                 border-radius: 15px;
                 background-color: var(--Lavanda);
             }
@@ -1431,6 +1438,7 @@ footer {
         right: 1em;
         width: 50px;
         height: 50px;
+        border: none;
         border-radius: 15px;
         background-color: white;
         font-size: 1.5em;

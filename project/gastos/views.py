@@ -5,8 +5,8 @@ from decimal import Decimal
 from django.utils import timezone
 from django.http import JsonResponse
 from core.views import transformar_mes
-import json
 from django.views.decorators.http import require_POST
+from django.db.models import Count, Q, Exists, OuterRef
 
 @login_required
 def ingresar_gasto(request):
@@ -119,54 +119,73 @@ def ingresar_gasto(request):
 @login_required
 def gastos(request):
     hoy = timezone.now()
-
     filtro_tipo = request.GET.get('filtro', 'mes')
 
-    filtros = {
+    filtros_fecha = {}
+    filtros_generales = {
         'usuario': request.user,
     }
 
     if filtro_tipo == 'dia':
-        filtros['fecha__year'] = hoy.year
-        filtros['fecha__month'] = hoy.month
-        filtros['fecha__day'] = hoy.day
+        filtros_fecha['fecha__year'] = hoy.year
+        filtros_fecha['fecha__month'] = hoy.month
+        filtros_fecha['fecha__day'] = hoy.day
         titulo = "Hoy"
 
     elif filtro_tipo == 'mes':
-        filtros['fecha__year'] = hoy.year
-        filtros['fecha__month'] = hoy.month
+        filtros_fecha['fecha__year'] = hoy.year
+        filtros_fecha['fecha__month'] = hoy.month
         titulo = transformar_mes(hoy.month)
 
     elif filtro_tipo == 'anio':
-        filtros['fecha__year'] = hoy.year
+        filtros_fecha['fecha__year'] = hoy.year
         titulo = f"{hoy.year}"
 
     elif filtro_tipo == 'historico':
         titulo = "Histórico"
 
     else:
-        filtros['fecha__year'] = hoy.year
-        filtros['fecha__month'] = hoy.month
+        filtros_fecha['fecha__year'] = hoy.year
+        filtros_fecha['fecha__month'] = hoy.month
         titulo = transformar_mes(hoy.month)
 
-    gastos_fijos = Gasto_fijo.objects.filter(**filtros).order_by('-fecha')
+    filtros = {**filtros_generales, **filtros_fecha}
+
+    gastos_fijos_base = Gasto_fijo.objects.filter(usuario=request.user).annotate(
+        tiene_pendientes=Exists(
+            Cuota.objects.filter(
+                gasto=OuterRef('pk'),
+                pagada=False
+            )
+        ),
+        total_cuotas=Count('cuota'),
+        cuotas_pagadas=Count('cuota', filter=Q(cuota__pagada=True)),
+    )
+
+    if filtro_tipo == 'historico':
+        gastos_fijos = gastos_fijos_base.order_by('-fecha')
+    else:
+        gastos_fijos = gastos_fijos_base.filter(
+            Q(**filtros_fecha) | Q(tiene_pendientes=True)
+        ).distinct().order_by('-fecha')
 
     gastos_diarios = Gasto.objects.filter(**filtros).order_by('-fecha')
-
     ingresos = Ingreso.objects.filter(**filtros).order_by('-fecha')
 
     categorias = Categoria.objects.filter(usuario=request.user)
-
     categorias_ingreso = Categoria_ingreso.objects.filter(usuario=request.user)
 
+    cuotas = Cuota.objects.filter(gasto__usuario=request.user)
+
     return render(request, 'gastos/gastos.html', {
-        'gastos_fijos':gastos_fijos,
+        'gastos_fijos': gastos_fijos,
         'filtro_activo': filtro_tipo,
         'categorias': categorias,
         'categorias_ingreso': categorias_ingreso,
         'gastos_diarios': gastos_diarios,
         'ingresos': ingresos,
-        })
+        'cuotas': cuotas,
+    })
 
 def gasto_fijo_data(request, id):
     gasto = Gasto_fijo.objects.get(id=id)

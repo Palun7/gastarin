@@ -55,6 +55,7 @@
                 <div class="tarjeta-cuotas">
                     {% for gasto in lista_cuotas %}
                         <div class="gasto-cuotas">
+                            <p>{{ gasto.fecha }}</p>
                             <p>Monto total: ${{ gasto.monto|floatformat:"-2" }}</p>
                             <p>Categoria: {{ gasto.categoria }}</p>
                             {% if gasto.nota %}
@@ -68,16 +69,32 @@
                                 </div>
                             {% endif %}
                             <p>Cuotas: {{ gasto.cuotas }}</p>
+                            {% if gasto.ultima_cuota_pagada_numero %}
+                                <p class="ultima-cuota">
+                                    Vas por la cuota: {{ gasto.ultima_cuota_pagada_numero }}
+                                    {% if gasto.ultima_cuota_pagada_fecha %}
+                                        - pagada el {{ gasto.ultima_cuota_pagada_fecha }}
+                                    {% endif %}
+                                </p>
+                            {% else %}
+                                <p class="ultima-cuota">Aún no pagó ninguna cuota</p>
+                            {% endif %}
                             <div class="cuotas">
                                 {% for cuota in gasto.cuota_set.all %}
-                                    <label>
+                                    <label data-cuota-id="{{ cuota.id }}" class="{% if cuota.numero == gasto.ultima_cuota_pagada_numero %}cuota-ultima-pagada{% endif %}">
                                         <p>Cuota {{ cuota.numero }}</p>
-                                        <input 
-                                            type="checkbox"
-                                            class="checkbox-cuota"
-                                            data-id="{{ cuota.id }}"
-                                            {% if cuota.pagada %}checked{% endif %}
-                                        >
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="cuota_id" value="{{ cuota.id }}">
+
+                                            <input
+                                                type="checkbox"
+                                                class="checkbox-cuota"
+                                                data-cuota-id="{{ cuota.id }}"
+                                                onchange="this.form.submit()"
+                                                {% if cuota.pagada %}checked{% endif %}
+                                            >
+                                        </form>
                                     </label>
                                 {% endfor %}
                             </div>

@@ -89,6 +89,7 @@ class Cuota(models.Model):
     gasto = models.ForeignKey(Gasto_fijo, on_delete=models.CASCADE)
     numero = models.IntegerField()
     monto = models.DecimalField(max_digits=11, decimal_places=2)
+    fecha_pago = models.DateField(null=True, blank=True)
     pagada = models.BooleanField(default=False)
 
     class Meta:

@@ -73,3 +73,24 @@ function cerrar(contenedor, boton){
         }
     });
 };
+
+document.querySelectorAll('.checkbox-cuota').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        sessionStorage.setItem('cuotaAResaltar', checkbox.dataset.cuotaId);
+        checkbox.form.submit();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cuotaId = sessionStorage.getItem('cuotaAResaltar');
+
+    if (cuotaId) {
+        const cuota = document.querySelector(`[data-cuota-id="${cuotaId}"]`);
+
+        if (cuota) {
+            cuota.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }
+
+        sessionStorage.removeItem('cuotaAResaltar');
+    }
+});

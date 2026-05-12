@@ -29,7 +29,12 @@
                                 <p>Nota: {{ gasto_fijo.nota }}</p>
                             {% endif %}
                             {% if gasto_fijo.cuotas %}
-                                <p>Cuotas: {{ gasto_fijo.cuotas }}</p>
+                                <p>
+                                    Cuotas: {{ gasto_fijo.cuotas_pagadas }}/{{ gasto_fijo.cuotas }}
+                                    {% if gasto_fijo.cuotas_pagadas == gasto_fijo.cuotas %}
+                                        - Pagadas
+                                    {% endif %}
+                                </p>
                             {% endif %}
                             {% if gasto_fijo.foto %}
                                 <button class="boton-abrir-foto boton_abrir_foto">Ver foto de referencia</button>

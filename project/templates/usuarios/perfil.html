@@ -20,14 +20,14 @@
                 <p>{{ user.first_name }}, {{ user.last_name }}</p>
                 <p>{{ user.email }}</p>
                 <p>Tel: {{ user.telefono }}</p>
-                <a href="#" class="boton-editar-datos-perfil">Editar Datos</a>
+                <button type="button" class="boton-editar-datos-perfil">Editar Datos</button>
             </div>
         </div>
         <div class="proximamente">
             <h4>Proximamente editar categoria</h4>
         </div>
         <div class="editar-datos-perfil display-none">
-            <a href="#" class="boton-cerrar-editar-perfil">X</a>
+            <button type="button" class="boton-cerrar-editar-perfil">X</button>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h3>Editar Datos</h3>
