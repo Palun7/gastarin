@@ -1480,13 +1480,14 @@ footer {
             background-color: white;
             width: 90vw;
             min-height: 20vh;
-            max-height: 85vh;
+            max-height: 80vh;
             border-radius: 15px;
             padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2vh;
+            overflow: auto;
 
             p {
                 color: var(--Gris-claro);
@@ -1516,6 +1517,10 @@ footer {
                     border-radius: 16px;
                     cursor: pointer;
                 }
+            }
+
+            &::-webkit-scrollbar {
+            display: none;
             }
         }
     }
