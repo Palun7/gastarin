@@ -7,7 +7,7 @@
 
 {% block content %}
     <main class="perfil">
-        <div class="muestra-datos">
+        <div class="muestra-datos sombra">
             <div class="foto-perfil-contenedor">
                 {% if user.foto %}
                     <img src="{{ user.foto.url }}" alt="Foto de perfil" class="foto-perfil">
@@ -23,8 +23,51 @@
                 <button type="button" class="boton-editar-datos-perfil">Editar Datos</button>
             </div>
         </div>
-        <div class="proximamente">
-            <h4>Proximamente editar categoria</h4>
+        <button type="button" class="abrir-categorias sombra">Ver Tus Categorias</button>
+        <div class="modal-categorias display-none">
+            <button type="button" class="cerrar-categorias">X</button>
+            <div class="ver-categorias">
+                <h4>Categorias Gastos</h4>
+                <p>(Toca la que quieras editar)</p>
+                <div class="categorias-for">
+                    {% for categoria in categorias %}
+                        <button 
+                            type="button"
+                            class="categoria-perfil"
+                            data-id="{{ categoria.id }}"
+                            >
+                            <span class="icono">{{ categoria.icono }}</span>
+                            <span class="texto">{{ categoria.nombre }}</span>
+                        </button>
+                    {% endfor %}
+                </div>
+                <h4>Categorias Ingreso</h4>
+                <p>(Toca la que quieras editar)</p>
+                <div class="categorias-for">
+                    {% for categoria in categorias_ingreso %}
+                        <button 
+                            type="button"
+                            class="categoria-perfil"
+                            data-id="{{ categoria.id }}"
+                            >
+                            <span class="icono">{{ categoria.icono }}</span>
+                            <span class="texto">{{ categoria.nombre }}</span>
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="editar-categoria display-none">
+            <button class="cerrar-editar">X</button>
+            <form id="form-categoria">
+                {% csrf_token %}
+                <h4 id="h4"></h4>
+                <input type="hidden" id="edit-id">
+
+                <input type="text" name="nombre" id="edit-nombre">
+                <input type="text" name="icono" id="edit-icono">
+                <button type="submit">Guardar</button>
+            </form>
         </div>
         <div class="editar-datos-perfil display-none">
             <button type="button" class="boton-cerrar-editar-perfil">X</button>

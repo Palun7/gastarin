@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Categoria, Gasto, Gasto_fijo, Ingreso, Categoria_ingreso, Cuota
 from decimal import Decimal
@@ -186,6 +186,36 @@ def gastos(request):
         'ingresos': ingresos,
         'cuotas': cuotas,
     })
+
+@login_required
+def eliminar_ingreso(request, id):
+    ingreso = get_object_or_404(Ingreso, id=id, usuario=request.user)
+
+    if request.method == 'POST':
+        ingreso.delete()
+        return redirect('gastos:gastos')
+
+    return redirect('gastos:gastos')
+@login_required
+
+def eliminar_gasto(request, id):
+    gasto = get_object_or_404(Gasto, id=id, usuario=request.user)
+
+    if request.method == 'POST':
+        gasto.delete()
+        return redirect('gastos:gastos')
+
+    return redirect('gastos:gastos')
+
+@login_required
+def eliminar_gasto_fijo(request, id):
+    gasto_fijo = get_object_or_404(Gasto_fijo, id=id, usuario=request.user)
+
+    if request.method == 'POST':
+        gasto_fijo.delete()
+        return redirect('gastos:gastos')
+
+    return redirect('gastos:gastos')
 
 def gasto_fijo_data(request, id):
     gasto = Gasto_fijo.objects.get(id=id)

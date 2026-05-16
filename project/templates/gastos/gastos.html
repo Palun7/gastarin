@@ -50,6 +50,10 @@
                                     <path d="M13.5 6.5l4 4" />
                                 </svg>
                             </a>
+                            <form method="post" action="{% url 'gastos:eliminar-gasto-fijo' gasto_fijo.id %}" class="form-eliminar-gasto">
+                                {% csrf_token %}
+                                <button type="submit">Eliminar</button>
+                            </form>
                         </div>
                     {% endfor %}
                 {% else %}
@@ -81,6 +85,10 @@
                                     <path d="M13.5 6.5l4 4" />
                                 </svg>
                             </a>
+                            <form method="post" action="{% url 'gastos:eliminar-gasto' gasto.id %}" class="form-eliminar-gasto-fijo">
+                                {% csrf_token %}
+                                <button type="submit">Eliminar</button>
+                            </form>
                         </div>
                     {% endfor %}
                 {% else %}
@@ -115,6 +123,10 @@
                                     <path d="M13.5 6.5l4 4" />
                                 </svg>
                             </a>
+                            <form method="post" action="{% url 'gastos:eliminar-ingreso' ingreso.id %}" class="form-eliminar-ingreso">
+                                {% csrf_token %}
+                                <button type="submit">Eliminar</button>
+                            </form>
                         </div>
                     {% endfor %}
                 {% else %}

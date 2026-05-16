@@ -14,9 +14,10 @@
         <a href="#" class="boton-novedades">Novedades en la app</a>
         <div class="novedades display-none">
             <a href="#" class="boton-cerrar-novedades">X</a>
-            <h4>Version: 1.1</h4>
-            <p class="nuevo"><strong>Nuevo</strong> Podés hacer una <a href="{% url 'core:recomendaciones' %}">recomendación</a> para contribuir en el proyecto</p>
-            <p class="nuevo"><strong>Nuevo</strong> Ya se puede descargar como aplicacion para celulcar</p>
+            <h4>Version: 1.12</h4>
+            <p class="nuevo"><strong>Nuevo</strong> Ahora podes editar tus categorias desde la pestaña <a href="{% url 'usuarios:perfil' %}">Perfil</a></p>
+            <p>Podés hacer una <a href="{% url 'core:recomendaciones' %}">recomendación</a> para contribuir en el proyecto</p>
+            <p>Ya se puede descargar como aplicacion para celulcar</p>
             <p>Ahora podes ingresar a <a href="{% url 'usuarios:perfil' %}"><strong>perfil</strong></a> y editar tus datos personales</p>
             <p>Ya se pueden ver y editar los gastos e ingresos en la pestaña de <a href="{% url 'gastos:gastos' %}"><strong>administración</strong></a></p>
         </div>
@@ -81,7 +82,7 @@
                             {% endif %}
                             <div class="cuotas">
                                 {% for cuota in gasto.cuota_set.all %}
-                                    <label data-cuota-id="{{ cuota.id }}" class="{% if cuota.numero == gasto.ultima_cuota_pagada_numero %}cuota-ultima-pagada{% endif %}">
+                                <label data-cuota-id="{{ cuota.id }}" class="{% if cuota.numero == gasto.ultima_cuota_pagada_numero %}cuota-ultima-pagada{% endif %}">
                                         <p>Cuota {{ cuota.numero }}</p>
                                         <form method="post">
                                             {% csrf_token %}
@@ -95,6 +96,7 @@
                                                 {% if cuota.pagada %}checked{% endif %}
                                             >
                                         </form>
+                                        <p>${{ cuota.monto }}</p>
                                     </label>
                                 {% endfor %}
                             </div>

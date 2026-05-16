@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.db.models import Count, F, Q, Sum, OuterRef, Subquery, Prefetch
+from django.db.models import Count, F, Q, OuterRef, Subquery, Prefetch
 from .models import Recomendaciones
 
 

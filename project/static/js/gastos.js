@@ -242,3 +242,30 @@ for (let boton of boton_abrir_foto_ingreso) {
         cerrar_ventana(foto_referencia_contenedor_ingreso, boton_cerrar_foto_ingreso)
     })
 }
+
+document.querySelectorAll('.form-eliminar-ingreso').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const confirmar = confirm('¿Seguro que querés eliminar este ingreso?');
+        if (!confirmar) {
+            e.preventDefault();
+        }
+    });
+});
+
+document.querySelectorAll('.form-eliminar-gasto').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const confirmar = confirm('¿Seguro que querés eliminar este gasto fijo?');
+        if (!confirmar) {
+            e.preventDefault();
+        }
+    });
+});
+
+document.querySelectorAll('.form-eliminar-gasto-fijo').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const confirmar = confirm('¿Seguro que querés eliminar este gasto diario?');
+        if (!confirmar) {
+            e.preventDefault();
+        }
+    });
+});

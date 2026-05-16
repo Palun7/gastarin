@@ -5,7 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import update_session_auth_hash
 import os
-
+from gastos.views import Categoria, Categoria_ingreso
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 def logout_view(request):
     logout(request)
@@ -90,4 +92,55 @@ def perfil(request):
         user.save()
         update_session_auth_hash(request, user)
         return redirect('usuarios:perfil')
-    return render(request, 'usuarios/perfil.html')
+
+    categorias = Categoria.objects.filter(usuario=request.user)
+    categorias_ingreso = Categoria_ingreso.objects.filter(usuario=request.user)
+
+    return render(request, 'usuarios/perfil.html', {
+        'categorias': categorias,
+        'categorias_ingreso': categorias_ingreso,
+    })
+
+def categoria_data(request, id):
+
+    categoria = Categoria.objects.filter(id=id).first()
+    h4 = 'Editar Categoria de Gastos'
+
+    if not categoria:
+        categoria = Categoria_ingreso.objects.filter(id=id).first()
+        h4 = 'Editar Categoria de Ingresos'
+
+    if not categoria:
+        return JsonResponse({'error': 'Categoría no encontrada'}, status=404)
+
+    return JsonResponse({
+        'nombre': categoria.nombre,
+        'icono': categoria.icono,
+        'h4': h4,
+    })
+
+@require_POST
+def editar_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+
+    if not categoria:
+        categoria = Categoria_ingreso.objects.get(id=id)
+        nombre = request.POST.get('nombre')
+        icono = request.POST.get('icono')
+
+        categoria.nombre = nombre
+        categoria.icono = icono
+
+        categoria.save()
+
+        return JsonResponse({'ok': True})
+
+    nombre = request.POST.get('nombre')
+    icono = request.POST.get('icono')
+
+    categoria.nombre = nombre
+    categoria.icono = icono
+
+    categoria.save()
+
+    return JsonResponse({'ok': True})
