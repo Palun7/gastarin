@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gastarin-v1.1';
+const CACHE_NAME = 'gastarin-v1.12';
 
 const urlsToCache = [
     '/',
