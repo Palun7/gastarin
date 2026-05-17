@@ -9,4 +9,6 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
     path('categoria/<int:id>/data/', views.categoria_data),
     path('categoria/<int:id>/editar/', views.editar_categoria),
+    path('categoria-ingreso/<int:id>/data/', views.categoria_ingreso_data),
+    path('categoria-ingreso/<int:id>/editar/', views.editar_categoria_ingreso),
 ]

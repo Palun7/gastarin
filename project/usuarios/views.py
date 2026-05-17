@@ -111,8 +111,17 @@ def categoria_data(request, id):
     h4 = 'Editar Categoria de Gastos'
 
     if not categoria:
-        categoria = Categoria_ingreso.objects.filter(id=id).first()
-        h4 = 'Editar Categoria de Ingresos'
+        return JsonResponse({'error': 'Categoría no encontrada'}, status=404)
+
+    return JsonResponse({
+        'nombre': categoria.nombre,
+        'icono': categoria.icono,
+        'h4': h4,
+    })
+
+def categoria_ingreso_data(request, id):
+    categoria = Categoria_ingreso.objects.filter(id=id).first()
+    h4 = 'Editar Categoria de Ingresos'
 
     if not categoria:
         return JsonResponse({'error': 'Categoría no encontrada'}, status=404)
@@ -139,6 +148,19 @@ def editar_categoria(request, id):
 
         return JsonResponse({'ok': True})
 
+    nombre = request.POST.get('nombre')
+    icono = request.POST.get('icono')
+
+    categoria.nombre = nombre
+    categoria.icono = icono
+
+    categoria.save()
+
+    return JsonResponse({'ok': True})
+
+@require_POST
+def editar_categoria_ingreso(request, id):
+    categoria = Categoria_ingreso.objects.get(id=id)
     nombre = request.POST.get('nombre')
     icono = request.POST.get('icono')
 

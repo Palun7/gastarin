@@ -73,6 +73,30 @@ document.querySelectorAll('.categoria-perfil').forEach(btn => {
     cerrar_ventana(ventana_editar, cerrar_editar);
 });
 
+document.querySelectorAll('.categoria-perfil-ingreso').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const id = this.dataset.id;
+
+        fetch(`/usuarios/categoria-ingreso/${id}/data/`)
+            .then(res => res.json())
+            .then(data => {
+
+                document.getElementById('edit-id').value = id;
+                document.getElementById('h4').innerHTML = data.h4;
+                document.getElementById('edit-nombre').value = data.nombre;
+                document.getElementById('edit-icono').value = data.icono;
+
+                document.querySelector('.editar-categoria').classList.remove('display-none');
+            });
+    });
+
+    const cerrar_editar = document.querySelector('.cerrar-editar');
+    const ventana_editar = document.querySelector('.editar-categoria');
+    cerrar_ventana(ventana_editar, cerrar_editar);
+});
+
 document.getElementById('form-categoria').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -82,6 +106,24 @@ document.getElementById('form-categoria').addEventListener('submit', function(e)
     const formData = new FormData(form);
 
     fetch(`/usuarios/categoria/${id}/editar/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: formData
+    })
+    .then(() => location.reload());
+});
+
+document.getElementById('form-categoria').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const id = document.getElementById('edit-id').value;
+    const form = document.getElementById('form-categoria');
+
+    const formData = new FormData(form);
+
+    fetch(`/usuarios/categoria-ingreso/${id}/editar/`, {
         method: 'POST',
         headers: {
             'X-CSRFToken': getCookie('csrftoken'),

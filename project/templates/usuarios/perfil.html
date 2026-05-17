@@ -53,7 +53,7 @@
                     {% for categoria in categorias_ingreso %}
                         <button 
                             type="button"
-                            class="categoria-perfil"
+                            class="categoria-perfil-ingreso"
                             data-id="{{ categoria.id }}"
                             >
                             <span class="icono">{{ categoria.icono }}</span>
@@ -113,5 +113,5 @@
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static 'js/perfil.js' %}?v=1.13"></script>
+    <script src="{% static 'js/perfil.js' %}?v=1.131"></script>
 {% endblock scripts %}
