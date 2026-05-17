@@ -518,6 +518,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(4px);
 
     .foto-referencia {
         width: 60vw;
@@ -766,6 +767,7 @@ footer {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.253);
+    backdrop-filter: blur(4px);
 
     form {
         display: flex;
@@ -1236,10 +1238,12 @@ footer {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.4);
+    z-index: 2500;
 
     display: none;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(4px);
 }
 
 .modal-personalizado {
@@ -1252,6 +1256,7 @@ footer {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
 
     align-items: center;
     justify-content: center;
@@ -1525,6 +1530,7 @@ footer {
         display: flex;
         justify-content: center;
         align-items: center;
+        backdrop-filter: blur(4px);
 
         .cerrar-categorias {
             position: absolute;
@@ -1601,6 +1607,7 @@ footer {
         display: flex;
         justify-content: center;
         align-items: center;
+        backdrop-filter: blur(4px);
 
         .cerrar-editar {
             position: absolute;
@@ -1619,7 +1626,7 @@ footer {
 
         form {
             width: 80vw;
-            height: 30vh;
+            height: 35vh;
             background-color: white;
             border-radius: 15px;
             padding: 15px;
@@ -1679,6 +1686,7 @@ footer {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.288);
     z-index: 2000;
+    backdrop-filter: blur(4px);
 
     .boton-cerrar-editar-perfil {
         position: absolute;
