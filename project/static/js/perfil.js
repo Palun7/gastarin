@@ -90,3 +90,14 @@ document.getElementById('form-categoria').addEventListener('submit', function(e)
     })
     .then(() => location.reload());
 });
+
+const error = document.querySelector('.error-password');
+
+if (error){
+    setTimeout(()=> {
+        error.classList.add('opacity-0');
+    }, 2000);
+    setTimeout(()=> {
+        error.classList.add('display-none');
+    }, 5000);
+};

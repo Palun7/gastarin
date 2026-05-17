@@ -59,10 +59,15 @@ boton_novedades.addEventListener('click', () => {
     const div_novedades = document.querySelector('.novedades');
     div_novedades.classList.remove('display-none');
     const boton_cerrar_novedades = document.querySelector('.boton-cerrar-novedades');
+    const contenedor = document.getElementById('contenedor-novedades');
     boton_cerrar_novedades.addEventListener('click', () => {
         div_novedades.classList.add('display-none');
     })
-    cerrar(div_novedades, boton_cerrar_novedades);
+    window.addEventListener('click', function(e) {
+        if (e.target === contenedor || e.target === boton_cerrar_novedades || e.target === div_novedades) {
+            div_novedades.classList.add('display-none');
+        }
+    });
 });
 
 
@@ -92,5 +97,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         sessionStorage.removeItem('cuotaAResaltar');
+    }
+});
+
+const botonPersonalizado = document.getElementById('boton-personalizado');
+const modalPersonalizado = document.getElementById('modal-personalizado');
+const cerrarPersonalizado = document.getElementById('cerrar-personalizado');
+
+if (botonPersonalizado && modalPersonalizado) {
+    botonPersonalizado.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalPersonalizado.classList.remove('display-none');
+        console.log('boton apretado');
+    });
+}
+
+if (cerrarPersonalizado && modalPersonalizado) {
+    cerrarPersonalizado.addEventListener('click', () => {
+        modalPersonalizado.classList.add('display-none');
+    });
+}
+
+window.addEventListener('click', (e) => {
+    if (e.target === modalPersonalizado) {
+        modalPersonalizado.classList.add('display-none');
     }
 });

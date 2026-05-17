@@ -3,6 +3,7 @@
     "short_name": "Gastarin",
     "start_url": "/",
     "display": "standalone",
+    "scope": "/",
     "background_color": "#ffffff",
     "theme_color": "#1f2937",
     "description": "Administrador de gastos",

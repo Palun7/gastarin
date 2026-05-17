@@ -11,15 +11,21 @@
         {% if exito %}
             <p class="exito" id="exito">{{ exito }}</p>
         {% endif %}
-        <a href="#" class="boton-novedades">Novedades en la app</a>
+        <button type="button" class="boton-novedades">Novedades en la app</button>
         <div class="novedades display-none">
-            <a href="#" class="boton-cerrar-novedades">X</a>
-            <h4>Version: 1.12</h4>
-            <p class="nuevo"><strong>Nuevo</strong> Ahora podes editar tus categorias desde la pestaña <a href="{% url 'usuarios:perfil' %}">Perfil</a></p>
-            <p>Podés hacer una <a href="{% url 'core:recomendaciones' %}">recomendación</a> para contribuir en el proyecto</p>
-            <p>Ya se puede descargar como aplicacion para celulcar</p>
-            <p>Ahora podes ingresar a <a href="{% url 'usuarios:perfil' %}"><strong>perfil</strong></a> y editar tus datos personales</p>
-            <p>Ya se pueden ver y editar los gastos e ingresos en la pestaña de <a href="{% url 'gastos:gastos' %}"><strong>administración</strong></a></p>
+            <div id="contenedor-novedades">
+                <button type="button" class="boton-cerrar-novedades">X</button>
+                <h4>Version: 1.13</h4>
+                <p class="nuevo"><strong>Nuevo</strong> Si necesitas ver los gastos e igresos en un rango de fecha específico, ya lo podes ver desde la página de <a href="{% url 'core:index' %}">inicio</a> o en la página de <a href="{% url 'gastos:gastos' %}">administración</a></p>
+                <h4>Version: 1.12</h4>
+                <p>Ahora podes editar tus categorias desde la pestaña <a href="{% url 'usuarios:perfil' %}">Perfil</a></p>
+                <h4>Version: 1.1</h4>
+                <p>Podés hacer una <a href="{% url 'core:recomendaciones' %}">recomendación</a> para contribuir en el proyecto</p>
+                <p>Ya se puede descargar como aplicacion para celulcar</p>
+                <h4>Verson: 1.0</h4>
+                <p>Ahora podes ingresar a <a href="{% url 'usuarios:perfil' %}"><strong>perfil</strong></a> y editar tus datos personales</p>
+                <p>Ya se pueden ver y editar los gastos e ingresos en la pestaña de <a href="{% url 'gastos:gastos' %}"><strong>administración</strong></a></p>
+            </div>
         </div>
         <h1 class="saludo">¡Hola, {{ user.username }}!</h1>
         <div class="filtros display-none" id="filtros">
@@ -27,6 +33,7 @@
             <a href="?filtro=mes" class="{% if filtro_activo == 'mes' %}activo{% endif %}">Mes</a>
             <a href="?filtro=anio" class="{% if filtro_activo == 'anio' %}activo{% endif %}">Año</a>
             <a href="?filtro=historico" class="{% if filtro_activo == 'historico' %}activo{% endif %}">Histórico</a>
+            <a href="?filtro=personalizado" class="{% if filtro_activo == 'personalizado' %}activo{% endif %}" id="boton-personalizado">Personalizado</a>
         </div>
         <div class="tarjeta-resumen">
             <div class="resumen">
@@ -120,6 +127,9 @@
                             <p>${{ gastos.monto|floatformat:"-2" }}</p>
                         </div>
                     {% endfor %}
+                    {% if not lista_gastos_diarios %}
+                        <p class="no-registro">No hay gastos registrados</p>
+                    {% endif %}
                     <p>Fijos</p>
                     {% for gastos in lista_gastos_fijos %}
                         <div class="gasto-fijo-mostrado">
@@ -136,13 +146,30 @@
                             {% endif %}
                         </div>
                     {% endfor %}
-                    <a href="{% url 'gastos:gastos' %}" class="ver-mas">Ver más...</a>
+                    {% if not lista_gastos_fijos %}
+                        <p class="no-registro">No hay gastos registrados</p>
+                    {% endif %}
+                    <p>Cuotas Pagadas</p>
+                    {% for cuotas in cuotas_pagadas %}
+                        <div class="gasto-fijo-mostrado">
+                            <p>{{ cuotas.fecha_pago }}</p>
+                            <p>{{ cuotas.gasto.categoria }}</p>
+                            <p>{{ cuotas.gasto.nota }}</p>
+                            <p>Cuota N°: {{ cuotas.numero }}</p>
+                            <p>{{ cuotas.monto }}</p>
+                        </div>
+                    {% endfor %}
+                    {% if not cuotas_pagadas %}
+                        <p class="no-registro">No hay cuotas pagadas</p>
+                    {% endif %}
+                    <a href="{% url 'gastos:gastos' %}" class="ver-mas">Ir a administración</a>
                 </div>
             </div>
             <div class="ver-ingresos">
                 <h5>Ingresos registrados</h5>
                 {% for ingresos in lista_ingresos %}
                     <div class="ingreso-mostrado">
+                        <p>{{ ingresos.fecha }}</p>
                         <p>{{ ingresos.categoria }}</p>
                         {% if ingresos.nota %}
                             <p>{{ ingresos.nota }}</p>
@@ -150,13 +177,46 @@
                         <p>${{ ingresos.monto|floatformat:"-2" }}</p>
                     </div>
                 {% endfor %}
-                <a href="{% url 'gastos:gastos' %}" class="ver-mas">Ver más...</a>
+                {% if not lista_ingresos %}
+                    <p class="no-registro">No hay ingresos registrados</p>
+                {% endif %}
+                <a href="{% url 'gastos:gastos' %}" class="ver-mas">Ir a administración</a>
             </div>
         </div>
-        <a href="{% url 'gastos:ingresar-gastos' %}" class="agregar-gasto">+</a>
+        <a href="{% url 'gastos:ingresar-gastos' %}" class="agregar-gasto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                <path d="M9 12h6" />
+                <path d="M12 9v6" />
+            </svg>
+        </a>
+        <div class="modal-personalizado display-none" id="modal-personalizado">
+            <div class="modal-content">
+                <h3>Filtro personalizado</h3>
+
+                <form method="get">
+                    <input type="hidden" name="filtro" value="personalizado">
+
+                    <label>
+                        Desde
+                        <input type="date" name="desde" value="{{ desde|date:'Y-m-d' }}">
+                    </label>
+
+                    <label>
+                        Hasta
+                        <input type="date" name="hasta" value="{{ hasta|date:'Y-m-d' }}">
+                    </label>
+
+                    <button type="submit" class="btn-aplicar">Aplicar</button>
+                </form>
+
+                <button type="button" class="cerrar" id="cerrar-personalizado">X</button>
+            </div>
+        </div>
     </main>
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/index.js' %}?v=1.13"></script>
 {% endblock scripts %}

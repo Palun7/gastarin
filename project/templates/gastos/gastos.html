@@ -14,7 +14,13 @@
             <a href="?filtro=mes" class="{% if filtro_activo == 'mes' %}activo{% endif %}">Mes</a>
             <a href="?filtro=anio" class="{% if filtro_activo == 'anio' %}activo{% endif %}">Año</a>
             <a href="?filtro=historico" class="{% if filtro_activo == 'historico' %}activo{% endif %}">Histórico</a>
+            <a href="?filtro=personalizado" class="{% if filtro_activo == 'personalizado' %}activo{% endif %}" id="boton-personalizado">Personalizado</a>
         </div>
+        {% if filtro_activo == 'personalizado' %}
+            <div class="fecha-personalizada">
+                <p>{{ titulo }}</p>
+            </div>
+        {% endif %}
         <h2>Gastos</h2>
         <div class="gastos-fijos-gastos">
             <h4>Gastos Fijos</h4>
@@ -43,16 +49,25 @@
                                     <img src="{{ gasto_fijo.foto.url }}" alt="Foto de referencia" class="foto-referencia">
                                 </div>
                             {% endif %}
-                            <a href="#" class="editar-gasto" data-id="{{ gasto_fijo.id }}">
+                            <button class="editar-gasto" data-id="{{ gasto_fijo.id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
                                     <path d="M13.5 6.5l4 4" />
                                 </svg>
-                            </a>
+                            </button>
                             <form method="post" action="{% url 'gastos:eliminar-gasto-fijo' gasto_fijo.id %}" class="form-eliminar-gasto">
                                 {% csrf_token %}
-                                <button type="submit">Eliminar</button>
+                                <button type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
                             </form>
                         </div>
                     {% endfor %}
@@ -78,16 +93,25 @@
                                     <img src="{{ gasto.foto.url }}" alt="Foto de referencia" class="foto-referencia">
                                 </div>
                             {% endif %}
-                            <a href="#" class="editar-gasto-diario" data-id="{{ gasto.id }}">
+                            <button class="editar-gasto-diario" data-id="{{ gasto.id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
                                     <path d="M13.5 6.5l4 4" />
                                 </svg>
-                            </a>
+                            </button>
                             <form method="post" action="{% url 'gastos:eliminar-gasto' gasto.id %}" class="form-eliminar-gasto-fijo">
                                 {% csrf_token %}
-                                <button type="submit">Eliminar</button>
+                                <button type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
                             </form>
                         </div>
                     {% endfor %}
@@ -116,16 +140,25 @@
                                     <img src="{{ ingreso.foto.url }}" alt="Foto de referencia" class="foto-referencia">
                                 </div>
                             {% endif %}
-                            <a href="#" class="editar-ingreso" data-id="{{ ingreso.id }}">
+                            <button class="editar-ingreso" data-id="{{ ingreso.id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
                                     <path d="M13.5 6.5l4 4" />
                                 </svg>
-                            </a>
+                            </button>
                             <form method="post" action="{% url 'gastos:eliminar-ingreso' ingreso.id %}" class="form-eliminar-ingreso">
                                 {% csrf_token %}
-                                <button type="submit">Eliminar</button>
+                                <button type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
                             </form>
                         </div>
                     {% endfor %}
@@ -292,9 +325,31 @@
                 </form>
             </div>
         </div>
+        <div class="modal-personalizado display-none" id="modal-personalizado">
+            <div class="modal-content">
+                <button type="button" class="boton-cerrar-modal" id="cerrar-personalizado">X</button>
+                <h3>Filtro personalizado</h3>
+
+                <form method="get">
+                    <input type="hidden" name="filtro" value="personalizado">
+
+                    <label>
+                        Desde
+                        <input type="date" name="desde" value="{{ desde|date:'Y-m-d' }}">
+                    </label>
+
+                    <label>
+                        Hasta
+                        <input type="date" name="hasta" value="{{ hasta|date:'Y-m-d' }}">
+                    </label>
+
+                    <button type="submit" class="volver">Filtrar</button>
+                </form>
+            </div>
+        </div>
     </main>
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static 'js/gastos.js' %}"></script>
+    <script src="{% static 'js/gastos.js' %}?v=1.13"></script>
 {% endblock scripts %}

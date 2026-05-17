@@ -7,7 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Count, F, Q, OuterRef, Subquery, Prefetch
 from .models import Recomendaciones
-
+from datetime import date
+from django.utils.dateparse import parse_date
 
 def transformar_mes(numero):
     meses = {
@@ -22,7 +23,6 @@ def transformar_mes(numero):
 @login_required(login_url='usuarios:login-registro')
 def index(request):
     if request.method == 'POST' and 'cuota_id' in request.POST:
-
         cuota_id = request.POST.get('cuota_id')
 
         cuota = Cuota.objects.get(
@@ -31,27 +31,27 @@ def index(request):
         )
 
         if not cuota.pagada:
-
             cuota.pagada = True
             cuota.fecha_pago = timezone.now().date()
-
             cuota.save()
 
         return redirect('core:index')
 
     hoy = timezone.now()
-
     filtro_tipo = request.GET.get('filtro', 'mes')
+
+    desde = parse_date(request.GET.get('desde') or '')
+    hasta = parse_date(request.GET.get('hasta') or '')
 
     filtros = {
         'usuario': request.user,
     }
 
-    # =========================
-    # FILTROS GENERALES
-    # =========================
+    if filtro_tipo == 'personalizado' and desde and hasta:
+        filtros['fecha__range'] = (desde, hasta)
+        titulo = f"Del {desde.strftime('%d/%m/%Y')} al {hasta.strftime('%d/%m/%Y')}"
 
-    if filtro_tipo == 'dia':
+    elif filtro_tipo == 'dia':
         filtros['fecha__year'] = hoy.year
         filtros['fecha__month'] = hoy.month
         filtros['fecha__day'] = hoy.day
@@ -93,10 +93,10 @@ def index(request):
         'pagada': True
     }
 
-    # IMPORTANTE:
-    # ahora filtramos por fecha del gasto
+    if filtro_tipo == 'personalizado' and desde and hasta:
+        filtros_cuotas['fecha_pago__range'] = (desde, hasta)
 
-    if filtro_tipo == 'dia':
+    elif filtro_tipo == 'dia':
         filtros_cuotas['fecha_pago__year'] = hoy.year
         filtros_cuotas['fecha_pago__month'] = hoy.month
         filtros_cuotas['fecha_pago__day'] = hoy.day
@@ -183,11 +183,15 @@ def index(request):
 
     lista_gastos_fijos = Gasto_fijo.objects.filter(
         **filtros
+    ).filter(
+        cuotas__isnull=True
     ).order_by('-fecha')[:5]
 
     lista_ingresos = Ingreso.objects.filter(
         **filtros
     ).order_by('-fecha')[:5]
+
+    cuotas_pagadas = Cuota.objects.filter(**filtros_cuotas).order_by('-fecha_pago')[:5]
 
     return render(request, 'core/index.html', {
         'ingreso': ingreso_total,
@@ -196,11 +200,14 @@ def index(request):
         'saldo_rojo': saldo_rojo,
         'titulo': titulo,
         'filtro_activo': filtro_tipo,
+        'desde': desde,
+        'hasta': hasta,
         'lista_cuotas': lista_cuotas,
         'cantidad': cantidad,
         'lista_gastos_diarios': lista_gastos_diarios,
         'lista_gastos_fijos': lista_gastos_fijos,
         'lista_ingresos': lista_ingresos,
+        'cuotas_pagadas': cuotas_pagadas,
     })
 
 @require_POST

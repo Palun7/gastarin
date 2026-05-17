@@ -67,6 +67,8 @@ def login_registro(request):
 @login_required
 def perfil(request):
     user = request.user
+    categorias = Categoria.objects.filter(usuario=request.user)
+    categorias_ingreso = Categoria_ingreso.objects.filter(usuario=request.user)
 
     if request.method == 'POST':
         user.username = request.POST.get('username')
@@ -81,7 +83,12 @@ def perfil(request):
             if check_password(password_actual, user.password):
                 user.password = make_password(password)
             else:
-                return render(request, 'usuarios/editar-perfil.html', {'usuario': user, 'error': 'Contraseña actual incorrecta'})
+                return render(request, 'usuarios/perfil.html', {
+                    'usuario': user,
+                    'error': 'Contraseña actual incorrecta',
+                    'categorias': categorias,
+                    'categorias_ingreso': categorias_ingreso,
+                })
 
         if request.FILES.get('foto'):
             if user.foto:
@@ -92,9 +99,6 @@ def perfil(request):
         user.save()
         update_session_auth_hash(request, user)
         return redirect('usuarios:perfil')
-
-    categorias = Categoria.objects.filter(usuario=request.user)
-    categorias_ingreso = Categoria_ingreso.objects.filter(usuario=request.user)
 
     return render(request, 'usuarios/perfil.html', {
         'categorias': categorias,

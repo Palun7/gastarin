@@ -8,7 +8,7 @@
 {% block content %}
     <main class="recomendaciones">
         <h1>Recomendaciones</h1>
-        <a href="#" class="boton-recomendacion">Hacer una recomendación</a>
+        <button type="button" class="boton-recomendacion">Hacer una recomendación</button>
         <div class="tus-recomendaciones sombra">
             {% if recomendaciones and not user.is_superuser %}
                 <h2>Tus recomendaciones</h2>
@@ -60,5 +60,5 @@
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static 'js/recomendaciones.js' %}"></script>
+    <script src="{% static 'js/recomendaciones.js' %}?v=1.13"></script>
 {% endblock scripts %}

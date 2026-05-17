@@ -275,6 +275,7 @@ footer {
     margin-top: 1.5em;
     background-color: white;
     padding: 30px;
+    padding-top: 50px;
     width: 20vw;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
@@ -295,6 +296,7 @@ footer {
         gap: 10px;
         align-items: center;
         position: absolute;
+        top: -2em;
         right: 0;
         color: var(--Azul-claro);
         svg {
@@ -332,6 +334,14 @@ footer {
         color: var(--Lavanda);
         font-weight: 800;
         text-decoration: underline;
+    }
+}
+
+.fecha-personalizada {
+    margin-top: 2em;
+
+    p {
+        color: var(--Azul-claro);
     }
 }
 
@@ -377,8 +387,11 @@ footer {
     position: absolute;
     top: -1.5em;
     right: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: 700;
-    padding: 4px 10px;
+    padding: 4px;
     border-radius: 999px;
     text-decoration: none;
     color: white;
@@ -590,12 +603,17 @@ footer {
     }
 }
 
+.no-registro {
+    color: var(--Gris-claro);
+}
+
 .boton-novedades {
     position: absolute;
     top: 0;
     text-decoration: none;
     color: black;
     padding: 5px;
+    border: none;
     border-radius: 15px;
     background-color: rgb(255, 242, 215);
 
@@ -614,6 +632,20 @@ footer {
     align-items: center;
     gap: 2em;
     padding: 2em;
+    backdrop-filter: blur(2px);
+
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2em;
+        max-height: 90vh;
+        overflow: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
 
     h4 {
         font-size: 1em;
@@ -640,6 +672,7 @@ footer {
         color: black;
         width: 50px;
         height: 50px;
+        border: .5px solid black;
         border-radius: 15px;
         background-color: white;
         font-size: 1.7em;
@@ -656,9 +689,10 @@ footer {
     align-self: end;
     color: black;
     background-color: white;
-    padding: 10px;
+    padding: 5px 10px;
     border-radius: 15px;
     margin-top: 2em;
+    border: .5px solid black;
 }
 
 .recomendaciones {
@@ -673,6 +707,7 @@ footer {
     .boton-recomendacion {
         text-decoration: none;
         color: white;
+        border: .5px solid black;
         font-size: 1em;
         font-weight: 600;
         padding: 10px;
@@ -1103,6 +1138,7 @@ footer {
                     color: white;
                     background-color: var(--Azul-claro);
                     padding: 5px;
+                    border: none;
                     border-radius: 10px;
                     height: 30px;
                     bottom: 10px;
@@ -1113,6 +1149,7 @@ footer {
                     position: absolute;
                     display: flex;
                     align-items: center;
+                    justify-content: center;
                     color: white;
                     background-color: var(--Rojo);
                     padding: 5px;
@@ -1124,7 +1161,10 @@ footer {
                     button {
                         border: none;
                         background-color: transparent;
-                        color: black;
+                        color: white;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                     }
                 }
             }
@@ -1200,6 +1240,31 @@ footer {
     display: none;
     align-items: center;
     justify-content: center;
+}
+
+.modal-personalizado {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+
+    align-items: center;
+    justify-content: center;
+
+    .btn-aplicar {
+        border: .5px solid black;
+        padding: 5px 10px;
+        border-radius: 10px;
+        background-color: var(--Lavanda);
+        font-size: 1em;
+        font-weight: 600;
+        color: white;
+    }
 }
 
 .modal-content {
@@ -1553,7 +1618,7 @@ footer {
         }
 
         form {
-            width: 70vw;
+            width: 80vw;
             height: 30vh;
             background-color: white;
             border-radius: 15px;
@@ -1569,15 +1634,16 @@ footer {
                 border: none;
                 padding: 15px;
                 border-radius: 15px;
-                width: 80%;
+                width: 90%;
                 display: flex;
-                justify-content: center;
+                text-align: center;
                 background-color: var(--Lavanda-claro);
+                font-size: 1.5em;
             }
 
             button {
                 position: absolute;
-                bottom: 1em;
+                bottom: .5em;
                 border: none;
                 border-radius: 15px;
                 padding: 10px;
@@ -1585,6 +1651,19 @@ footer {
                 font-weight: 600;
                 background-color: var(--Lavanda-claro);
             }
+        }
+    }
+
+    .error-password {
+        width: 90vw;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        transition-duration: 3s;
+
+        h3 {
+            color: var(--Rojo);
+            text-align: center;
         }
     }
 }

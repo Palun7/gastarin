@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from core.views import transformar_mes
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q, Exists, OuterRef
+from django.utils.dateparse import parse_date
+from datetime import date
 
 @login_required
 def ingresar_gasto(request):
@@ -121,12 +123,19 @@ def gastos(request):
     hoy = timezone.now()
     filtro_tipo = request.GET.get('filtro', 'mes')
 
+    desde = parse_date(request.GET.get('desde') or '')
+    hasta = parse_date(request.GET.get('hasta') or '')
+
     filtros_fecha = {}
     filtros_generales = {
         'usuario': request.user,
     }
 
-    if filtro_tipo == 'dia':
+    if filtro_tipo == 'personalizado' and desde and hasta:
+        filtros_fecha['fecha__range'] = (desde, hasta)
+        titulo = f"Del {desde.strftime('%d/%m/%Y')} al {hasta.strftime('%d/%m/%Y')}"
+
+    elif filtro_tipo == 'dia':
         filtros_fecha['fecha__year'] = hoy.year
         filtros_fecha['fecha__month'] = hoy.month
         filtros_fecha['fecha__day'] = hoy.day
@@ -164,6 +173,12 @@ def gastos(request):
 
     if filtro_tipo == 'historico':
         gastos_fijos = gastos_fijos_base.order_by('-fecha')
+
+    elif filtro_tipo == 'personalizado' and desde and hasta:
+        gastos_fijos = gastos_fijos_base.filter(
+            Q(fecha__range=(desde, hasta)) | Q(tiene_pendientes=True)
+        ).distinct().order_by('-fecha')
+
     else:
         gastos_fijos = gastos_fijos_base.filter(
             Q(**filtros_fecha) | Q(tiene_pendientes=True)
@@ -185,6 +200,9 @@ def gastos(request):
         'gastos_diarios': gastos_diarios,
         'ingresos': ingresos,
         'cuotas': cuotas,
+        'desde': desde,
+        'hasta': hasta,
+        'titulo': titulo,
     })
 
 @login_required

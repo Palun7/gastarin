@@ -269,3 +269,26 @@ document.querySelectorAll('.form-eliminar-gasto-fijo').forEach(form => {
         }
     });
 });
+
+const botonPersonalizado = document.getElementById('boton-personalizado');
+const modalPersonalizado = document.getElementById('modal-personalizado');
+const cerrarPersonalizado = document.getElementById('cerrar-personalizado');
+
+if (botonPersonalizado && modalPersonalizado) {
+    botonPersonalizado.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalPersonalizado.classList.remove('display-none');
+    });
+}
+
+if (cerrarPersonalizado && modalPersonalizado) {
+    cerrarPersonalizado.addEventListener('click', () => {
+        modalPersonalizado.classList.add('display-none');
+    });
+}
+
+window.addEventListener('click', (e) => {
+    if (e.target === modalPersonalizado) {
+        modalPersonalizado.classList.add('display-none');
+    }
+});
