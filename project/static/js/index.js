@@ -108,7 +108,6 @@ if (botonPersonalizado && modalPersonalizado) {
     botonPersonalizado.addEventListener('click', (e) => {
         e.preventDefault();
         modalPersonalizado.classList.remove('display-none');
-        console.log('boton apretado');
     });
 }
 
